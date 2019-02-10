@@ -16,7 +16,7 @@ message EnumSample =
 #[http.method = "GET"]
 message StructSample = {
     #[json.key = "X"]
-    field: type,
+    repeated_field: Thing<Array<Type>>,
 
     #[json.key = "Y"]
     optional_field?: type,

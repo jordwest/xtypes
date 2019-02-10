@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T11:19:58.862189Z"
+created: "2019-02-10T11:43:12.043798Z"
 creator: insta@0.6.2
 source: src/main.rs
 expression: file
@@ -73,8 +73,16 @@ File {
                 StructMessage {
                     fields: [
                         StructField {
-                            name: "field",
-                            type_name: "type",
+                            name: "repeated_field",
+                            type_name: Generic(
+                                "Thing",
+                                Generic(
+                                    "Array",
+                                    Concrete(
+                                        "Type"
+                                    )
+                                )
+                            ),
                             is_optional: false,
                             attrs: [
                                 Attribute {
@@ -85,7 +93,9 @@ File {
                         },
                         StructField {
                             name: "optional_field",
-                            type_name: "type",
+                            type_name: Concrete(
+                                "type"
+                            ),
                             is_optional: true,
                             attrs: [
                                 Attribute {

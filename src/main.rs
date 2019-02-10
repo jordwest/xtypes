@@ -94,9 +94,36 @@ mod xt {
     }
 
     #[derive(Debug, PartialEq)]
+    pub enum TypeName {
+        Concrete(String),
+        Generic(String, Box<TypeName>),
+    }
+    impl From<Pair<'_, Rule>> for TypeName {
+        fn from(pair: Pair<'_, Rule>) -> TypeName {
+            let pair = pair.into_inner().next().unwrap();
+            match pair.as_rule() {
+                Rule::ident => TypeName::Concrete(pair.as_str().into()),
+                Rule::generic_type => {
+                    let mut outside_type = None;
+                    let mut inside_type = None;
+                    for pair in pair.into_inner() {
+                        match pair.as_rule() {
+                            Rule::ident => outside_type = Some(pair.as_str().into()),
+                            Rule::type_name => inside_type = Some(pair.into()),
+                            _ => panic!(),
+                        }
+                    }
+                    TypeName::Generic(outside_type.unwrap(), Box::new(inside_type.unwrap()))
+                }
+                _ => panic!(),
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
     pub struct StructField {
         pub name: String,
-        pub type_name: String,
+        pub type_name: TypeName,
         pub is_optional: bool,
         pub attrs: Vec<Attribute>,
     }
@@ -111,7 +138,7 @@ mod xt {
                     for pair in pair.into_inner() {
                         match pair.as_rule() {
                             Rule::field_name => name = Some(pair.as_str().into()),
-                            Rule::field_type => type_name = Some(pair.as_str().into()),
+                            Rule::type_name => type_name = Some(pair.into()),
                             Rule::attribute => attrs.push(pair.into()),
                             Rule::optional => is_optional = true,
                             _ => panic!("Unexpected rule {}", pair.as_str()),

@@ -8,6 +8,9 @@ WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
 COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
 string_value = { (!("\"") ~ ANY)* }
 
+generic_type = { ident ~ "<" ~ type_name ~ ">" }
+type_name = { (generic_type | ident) }
+
 tuple = { "(" ~ ident ~ ("," ~ ident)* ~ ")" }
 
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
@@ -16,8 +19,7 @@ enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
 
 optional = { "?" }
 field_name = { ident }
-field_type = { ident }
-struct_field = { attribute* ~ field_name ~ optional? ~ ":" ~ field_type ~ "," }
+struct_field = { attribute* ~ field_name ~ (optional)? ~ ":" ~ type_name ~ "," }
 struct_message = { "{" ~ struct_field* ~ "}" }
 
 message_keyword = _{ "message" }
