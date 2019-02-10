@@ -1,4 +1,5 @@
 message EnumSample =
+    // First one
     | #[thing.stuff = "xyz"]
       #[json.tag = "A"]
       One

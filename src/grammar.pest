@@ -4,9 +4,12 @@ underscore = @{ "_" }
 ident = @{ alpha ~ (alpha | digit | underscore)* }
 dotted_ident = @{ alpha ~ (alpha | digit | underscore | ".")* }
 WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
+// COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
 message_keyword = _{ "message" }
 
 string_value = { (!("\"") ~ ANY)* }
+
 
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
 
