@@ -1,10 +1,19 @@
 ---
-created: "2019-02-10T10:16:32.268154Z"
+created: "2019-02-10T10:39:27.858461Z"
 creator: insta@0.6.2
 source: src/main.rs
 expression: file
 ---
 File {
+    module_info: ModuleInfo {
+        name: "Sample.Test",
+        attrs: [
+            Attribute {
+                name: "output",
+                value: "/sample/test/somefile.txt"
+            }
+        ]
+    },
     messages: [
         Message {
             name: "EnumSample",

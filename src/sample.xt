@@ -1,3 +1,7 @@
+
+#[output="/sample/test/somefile.txt"]
+module Sample.Test;
+
 message EnumSample =
     // First one
     | #[thing.stuff = "xyz"]
@@ -8,3 +12,4 @@ message EnumSample =
       Two
 
     | Three;
+

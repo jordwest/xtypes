@@ -6,14 +6,15 @@ dotted_ident = @{ alpha ~ (alpha | digit | underscore | ".")* }
 WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
 // COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
-message_keyword = _{ "message" }
-
 string_value = { (!("\"") ~ ANY)* }
 
 
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
-
 variant = { attribute* ~ ident }
 enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
-
+message_keyword = _{ "message" }
 message = { message_keyword ~ ident ~ "=" ~ enum_message ~ ";"}
+
+module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
+
+file = { WHITESPACE* ~ module_decl ~ message* }

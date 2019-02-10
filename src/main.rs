@@ -113,16 +113,65 @@ mod xt {
     }
 
     #[derive(Debug, PartialEq)]
+    pub struct ModuleInfo {
+        pub name: String,
+        pub attrs: Vec<Attribute>,
+    }
+    impl From<Pair<'_, Rule>> for ModuleInfo {
+        fn from(pair: Pair<'_, Rule>) -> ModuleInfo {
+            match pair.as_rule() {
+                Rule::module_decl => {
+                    let mut attrs = vec![];
+                    let mut name = "";
+                    for pair in pair.into_inner() {
+                        match pair.as_rule() {
+                            Rule::dotted_ident => name = pair.as_str(),
+                            Rule::attribute => attrs.push(pair.into()),
+                            _ => panic!(),
+                        }
+                    }
+                    ModuleInfo {
+                        name: name.into(),
+                        attrs,
+                    }
+                }
+                _ => panic!(),
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
     pub struct File {
+        pub module_info: ModuleInfo,
         pub messages: Vec<Message>,
+    }
+    impl From<Pair<'_, Rule>> for File {
+        fn from(pair: Pair<'_, Rule>) -> File {
+            match pair.as_rule() {
+                Rule::file => {
+                    let mut messages = vec![];
+                    let mut module_info = None;
+                    for pair in pair.into_inner() {
+                        match pair.as_rule() {
+                            Rule::module_decl => module_info = Some(pair.into()),
+                            Rule::message => messages.push(pair.into()),
+                            _ => panic!(),
+                        }
+                    }
+                    File {
+                        module_info: module_info.unwrap(),
+                        messages: messages,
+                    }
+                }
+                _ => panic!(),
+            }
+        }
     }
 
     pub fn parse(t: &str) -> File {
-        match XtParser::parse(Rule::message, t) {
+        match XtParser::parse(Rule::file, t) {
             Err(e) => panic!("{}", e),
-            Ok(v) => File {
-                messages: v.into_iter().map(Message::from).collect(),
-            },
+            Ok(v) => v.into_iter().next().unwrap().into(),
         }
     }
 
