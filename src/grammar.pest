@@ -16,7 +16,7 @@ enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
 optional = { "?" }
 field_name = { ident }
 field_type = { ident }
-struct_field = { field_name ~ optional? ~ ":" ~ field_type ~ "," }
+struct_field = { attribute* ~ field_name ~ optional? ~ ":" ~ field_type ~ "," }
 struct_message = { "{" ~ struct_field* ~ "}" }
 
 message_keyword = _{ "message" }

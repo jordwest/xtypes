@@ -14,6 +14,9 @@ message EnumSample =
     | Three;
 
 message StructSample = {
+    #[json.key = "X"]
     field: type,
+
+    #[json.key = "Y"]
     optional_field?: type,
 };

@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T10:58:17.512814Z"
+created: "2019-02-10T11:00:28.744071Z"
 creator: insta@0.6.2
 source: src/main.rs
 expression: file
@@ -59,13 +59,23 @@ File {
                             name: "field",
                             type_name: "type",
                             is_optional: false,
-                            attrs: []
+                            attrs: [
+                                Attribute {
+                                    name: "json.key",
+                                    value: "X"
+                                }
+                            ]
                         },
                         StructField {
                             name: "optional_field",
                             type_name: "type",
                             is_optional: true,
-                            attrs: []
+                            attrs: [
+                                Attribute {
+                                    name: "json.key",
+                                    value: "Y"
+                                }
+                            ]
                         }
                     ]
                 }
