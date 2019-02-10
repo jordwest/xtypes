@@ -186,6 +186,16 @@ pub struct Message {
     pub attrs: Vec<Attribute>,
     pub value: MessageType,
 }
+impl Message {
+    pub fn attr(&self, key: &str) -> Option<String> {
+        for attr in &self.attrs {
+            if attr.name == key {
+                return Some(attr.value.clone());
+            }
+        }
+        return None;
+    }
+}
 impl From<Pair<'_, Rule>> for Message {
     fn from(pair: Pair<'_, Rule>) -> Message {
         match pair.as_rule() {

@@ -1,4 +1,4 @@
-use crate::parser::{EnumMessage, MessageType, StructMessage, Tuple, TypeName, XtFile};
+use crate::parser::{EnumMessage, Message, MessageType, StructMessage, Tuple, TypeName, XtFile};
 use jens::{Block, File};
 
 pub fn make_tuple_type(t: &File, v: Tuple) -> Block {
@@ -33,25 +33,35 @@ pub fn make_fields(v: StructMessage) -> Block {
     })
 }
 
+fn make_doc_block(t: &File, msg: &Message) -> Block {
+    match msg.attr("doc") {
+        None => Block::empty(),
+        Some(v) => t.template("docblock").set("comment", v),
+    }
+}
+
 pub fn write_defs(file: XtFile) -> String {
     let t = File::parse(include_str!("./typescript.jens")).unwrap();
 
     let output = t.template("main").set(
         "messages",
         Block::join_map(file.messages, |m, _| {
-            t.template("namespace").set("name", m.name).set(
-                "content",
-                match m.value {
-                    MessageType::Enum(v) => t
-                        .template("tagged_union")
-                        .set("name", "T")
-                        .set("variants", make_variants(&t, v)),
-                    MessageType::Struct(v) => t
-                        .template("struct")
-                        .set("name", "T")
-                        .set("fields", make_fields(v)),
-                },
-            )
+            t.template("namespace")
+                .set("doc", make_doc_block(&t, &m))
+                .set("name", m.name)
+                .set(
+                    "content",
+                    match m.value {
+                        MessageType::Enum(v) => t
+                            .template("tagged_union")
+                            .set("name", "T")
+                            .set("variants", make_variants(&t, v)),
+                        MessageType::Struct(v) => t
+                            .template("struct")
+                            .set("name", "T")
+                            .set("fields", make_fields(v)),
+                    },
+                )
         }),
     );
     format!("{}", output)

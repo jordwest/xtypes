@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T12:06:27.585398Z"
+created: "2019-02-10T21:23:29.532925Z"
 creator: insta@0.6.2
 source: src/parser.rs
 expression: file
@@ -17,7 +17,12 @@ XtFile {
     messages: [
         Message {
             name: "EnumSample",
-            attrs: [],
+            attrs: [
+                Attribute {
+                    name: "doc",
+                    value: "This message could be one of three shapes"
+                }
+            ],
             value: Enum(
                 EnumMessage {
                     variants: [
@@ -64,6 +69,10 @@ XtFile {
         Message {
             name: "StructSample",
             attrs: [
+                Attribute {
+                    name: "doc",
+                    value: "Example of a struct/record type"
+                },
                 Attribute {
                     name: "http.method",
                     value: "GET"

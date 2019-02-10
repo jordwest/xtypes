@@ -4,20 +4,27 @@ main =
   ${messages}
 --
 
+docblock =
+  /**
+   * ${comment}
+   */
+--
+
 namespace =
-  namespace ${name} {
+  ${doc}
+  export namespace ${name} {
     ${content}
   }
 --
 
 struct =
-  type ${name} = {
+  export type ${name} = {
       ${fields}
   }
 --
 
 tagged_union =
-  type ${name} =
+  export type ${name} =
     ${variants};
 --
 

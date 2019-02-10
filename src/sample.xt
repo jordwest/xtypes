@@ -2,6 +2,7 @@
 #[output="/sample/test/somefile.txt"]
 module Sample.Test;
 
+#[doc = "This message could be one of three shapes"]
 message EnumSample =
     // First one
     | #[thing.stuff = "xyz"]
@@ -13,6 +14,7 @@ message EnumSample =
 
     | Three;
 
+#[doc = "Example of a struct/record type"]
 #[http.method = "GET"]
 message StructSample = {
     #[json.key = "X"]

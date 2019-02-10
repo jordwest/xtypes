@@ -1,19 +1,25 @@
 ---
-created: "2019-02-10T21:11:25.053403Z"
+created: "2019-02-10T21:26:04.012444Z"
 creator: insta@0.6.2
 source: tests/output.rs
 expression: defs
 ---
 // This file was generated automatically
 
-namespace EnumSample {
-  type T =
+/**
+ * This message could be one of three shapes
+ */
+export namespace EnumSample {
+  export type T =
     | { t: 'One' }
     | { t: 'Two', v: [StructSample, Boolean] }
     | { t: 'Three' };
 }
-namespace StructSample {
-  type T = {
+/**
+ * Example of a struct/record type
+ */
+export namespace StructSample {
+  export type T = {
       repeated_field: Thing<Array<Type>>
       optional_field?: type
   }
