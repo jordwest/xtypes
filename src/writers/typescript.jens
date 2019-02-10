@@ -1,0 +1,24 @@
+main =
+  // This file was generated automatically
+
+  ${messages}
+--
+
+struct =
+  type ${name} = {
+      ${fields}
+  }
+--
+
+tagged_union =
+  type ${name} =
+    ${variants};
+--
+
+variant =
+  | { t: '${name}' }
+--
+
+variant_with_content =
+  | { t: '${name}', v: ${content} }
+--

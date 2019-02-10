@@ -1,10 +1,10 @@
 ---
-created: "2019-02-10T11:45:48.623507Z"
+created: "2019-02-10T12:06:27.585398Z"
 creator: insta@0.6.2
 source: src/parser.rs
 expression: file
 ---
-File {
+XtFile {
     module_info: ModuleInfo {
         name: "Sample.Test",
         attrs: [

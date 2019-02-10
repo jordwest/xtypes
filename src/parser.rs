@@ -240,12 +240,12 @@ impl From<Pair<'_, Rule>> for ModuleInfo {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct File {
+pub struct XtFile {
     pub module_info: ModuleInfo,
     pub messages: Vec<Message>,
 }
-impl From<Pair<'_, Rule>> for File {
-    fn from(pair: Pair<'_, Rule>) -> File {
+impl From<Pair<'_, Rule>> for XtFile {
+    fn from(pair: Pair<'_, Rule>) -> XtFile {
         match pair.as_rule() {
             Rule::file => {
                 let mut messages = vec![];
@@ -258,7 +258,7 @@ impl From<Pair<'_, Rule>> for File {
                         _ => panic!("Unexpected '{:?}'", pair),
                     }
                 }
-                File {
+                XtFile {
                     module_info: module_info.unwrap(),
                     messages: messages,
                 }
@@ -268,7 +268,7 @@ impl From<Pair<'_, Rule>> for File {
     }
 }
 
-pub fn parse(t: &str) -> File {
+pub fn parse(t: &str) -> XtFile {
     match XtParser::parse(Rule::file, t) {
         Err(e) => panic!("{}", e),
         Ok(v) => v.into_iter().next().unwrap().into(),
@@ -282,3 +282,5 @@ fn test_parse_sample_1() {
     let file = parse(include_str!("./sample.xt"));
     assert_debug_snapshot_matches!("sample.xt", file);
 }
+
+

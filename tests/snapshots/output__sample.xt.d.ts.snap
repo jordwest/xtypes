@@ -1,0 +1,16 @@
+---
+created: "2019-02-10T12:20:51.182509Z"
+creator: insta@0.6.2
+source: tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+
+type EnumSample =
+  | { t: 'One' }
+  | { t: 'Two' }
+  | { t: 'Three' };
+type StructSample = {
+    repeated_field: Thing<Array<Type>>
+    optional_field?: type
+}
