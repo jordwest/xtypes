@@ -13,6 +13,7 @@ message EnumSample =
 
     | Three;
 
+#[http.method = "GET"]
 message StructSample = {
     #[json.key = "X"]
     field: type,

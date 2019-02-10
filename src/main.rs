@@ -92,7 +92,7 @@ mod xt {
                             Rule::field_type => type_name = Some(pair.as_str().into()),
                             Rule::attribute => attrs.push(pair.into()),
                             Rule::optional => is_optional = true,
-                            rule => panic!("Unexpected rule {}", pair.as_str()),
+                            _ => panic!("Unexpected rule {}", pair.as_str()),
                         }
                     }
                     StructField {
@@ -139,22 +139,27 @@ mod xt {
     #[derive(Debug, PartialEq)]
     pub struct Message {
         pub name: String,
+        pub attrs: Vec<Attribute>,
         pub value: MessageType,
     }
     impl From<Pair<'_, Rule>> for Message {
         fn from(pair: Pair<'_, Rule>) -> Message {
             match pair.as_rule() {
                 Rule::message => {
-                    let mut inner_pairs = pair.clone().into_inner();
-                    let ident = inner_pairs.next().unwrap();
-                    let name = match ident.as_rule() {
-                        Rule::ident => ident.as_str(),
-                        _ => panic!("Expected message name, found {}", pair.clone()),
-                    };
-                    let value = inner_pairs.next().unwrap();
+                    let mut name: Option<&str> = None;
+                    let mut value: Option<MessageType> = None;
+                    let mut attrs = vec![];
+                    for pair in pair.into_inner() {
+                        match pair.as_rule() {
+                            Rule::ident => name = Some(pair.as_str()),
+                            Rule::attribute => attrs.push(pair.into()),
+                            _ => value = Some(pair.into()),
+                        }
+                    }
                     Message {
-                        name: name.into(),
-                        value: value.into(),
+                        name: name.unwrap().into(),
+                        attrs,
+                        value: value.unwrap(),
                     }
                 }
                 unknown => panic!("Unexpected rule '{:?}' found ", unknown),
