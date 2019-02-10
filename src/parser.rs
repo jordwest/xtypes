@@ -27,7 +27,7 @@ impl From<Pair<'_, Rule>> for Attribute {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Tuple(Vec<String>);
+pub struct Tuple(pub Vec<String>);
 impl From<Pair<'_, Rule>> for Tuple {
     fn from(pair: Pair<'_, Rule>) -> Tuple {
         let mut types = vec![];
@@ -282,5 +282,3 @@ fn test_parse_sample_1() {
     let file = parse(include_str!("./sample.xt"));
     assert_debug_snapshot_matches!("sample.xt", file);
 }
-
-

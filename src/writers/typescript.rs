@@ -1,9 +1,17 @@
-use crate::parser::{EnumMessage, MessageType, StructMessage, TypeName, XtFile};
+use crate::parser::{EnumMessage, MessageType, StructMessage, Tuple, TypeName, XtFile};
 use jens::{Block, File};
 
+pub fn make_tuple_type(t: &File, v: Tuple) -> Block {
+    Block::from(format!("[{}]", v.0.join(", ")))
+}
+
 pub fn make_variants(t: &File, v: EnumMessage) -> Block {
-    Block::join_map(v.variants, |variant, _| {
-        t.template("variant").set("name", variant.name)
+    Block::join_map(v.variants, |variant, _| match variant.content {
+        None => t.template("variant").set("name", variant.name),
+        Some(content) => t
+            .template("variant_with_content")
+            .set("name", variant.name)
+            .set("content", make_tuple_type(t, content)),
     })
 }
 
