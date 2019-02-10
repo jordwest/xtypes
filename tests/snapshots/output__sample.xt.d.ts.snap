@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T20:57:33.599513Z"
+created: "2019-02-10T21:11:25.053403Z"
 creator: insta@0.6.2
 source: tests/output.rs
 expression: defs
@@ -9,7 +9,7 @@ expression: defs
 namespace EnumSample {
   type T =
     | { t: 'One' }
-    | { t: 'Two' }
+    | { t: 'Two', v: [StructSample, Boolean] }
     | { t: 'Three' };
 }
 namespace StructSample {
