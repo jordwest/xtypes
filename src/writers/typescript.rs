@@ -30,15 +30,20 @@ pub fn write_defs(file: XtFile) -> String {
 
     let output = t.template("main").set(
         "messages",
-        Block::join_map(file.messages, |m, _| match m.value {
-            MessageType::Enum(v) => t
-                .template("tagged_union")
-                .set("name", m.name)
-                .set("variants", make_variants(&t, v)),
-            MessageType::Struct(v) => t
-                .template("struct")
-                .set("name", m.name)
-                .set("fields", make_fields(v)),
+        Block::join_map(file.messages, |m, _| {
+            t.template("namespace").set("name", m.name).set(
+                "content",
+                match m.value {
+                    MessageType::Enum(v) => t
+                        .template("tagged_union")
+                        .set("name", "T")
+                        .set("variants", make_variants(&t, v)),
+                    MessageType::Struct(v) => t
+                        .template("struct")
+                        .set("name", "T")
+                        .set("fields", make_fields(v)),
+                },
+            )
         }),
     );
     format!("{}", output)

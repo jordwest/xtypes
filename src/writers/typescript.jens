@@ -4,6 +4,12 @@ main =
   ${messages}
 --
 
+namespace =
+  namespace ${name} {
+    ${content}
+  }
+--
+
 struct =
   type ${name} = {
       ${fields}
