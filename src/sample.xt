@@ -9,7 +9,7 @@ message EnumSample =
       One
 
     | #[blah = "X"]
-      Two
+      Two(StructSample, Boolean)
 
     | Three;
 

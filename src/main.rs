@@ -32,9 +32,25 @@ mod xt {
     }
 
     #[derive(Debug, PartialEq)]
+    pub struct Tuple(Vec<String>);
+    impl From<Pair<'_, Rule>> for Tuple {
+        fn from(pair: Pair<'_, Rule>) -> Tuple {
+            let mut types = vec![];
+            for pair in pair.into_inner() {
+                match pair.as_rule() {
+                    Rule::ident => types.push(pair.as_str().into()),
+                    _ => panic!(),
+                }
+            }
+            Tuple(types)
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
     pub struct EnumVariant {
         pub name: String,
         pub attrs: Vec<Attribute>,
+        pub content: Option<Tuple>,
     }
     impl From<Pair<'_, Rule>> for EnumVariant {
         fn from(pair: Pair<'_, Rule>) -> EnumVariant {
@@ -42,14 +58,20 @@ mod xt {
                 Rule::variant => {
                     let mut name = String::new();
                     let mut attrs = Vec::new();
+                    let mut content = None;
                     for pair in pair.into_inner() {
                         match pair.as_rule() {
                             Rule::ident => name = pair.as_str().into(),
                             Rule::attribute => attrs.push(pair.into()),
+                            Rule::tuple => content = Some(pair.into()),
                             _ => panic!(),
                         }
                     }
-                    EnumVariant { name, attrs }
+                    EnumVariant {
+                        name,
+                        attrs,
+                        content,
+                    }
                 }
                 _ => panic!(),
             }

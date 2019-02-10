@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T11:07:58.793784Z"
+created: "2019-02-10T11:19:58.862189Z"
 creator: insta@0.6.2
 source: src/main.rs
 expression: file
@@ -32,7 +32,8 @@ File {
                                     name: "json.tag",
                                     value: "A"
                                 }
-                            ]
+                            ],
+                            content: None
                         },
                         EnumVariant {
                             name: "Two",
@@ -41,11 +42,20 @@ File {
                                     name: "blah",
                                     value: "X"
                                 }
-                            ]
+                            ],
+                            content: Some(
+                                Tuple(
+                                    [
+                                        "StructSample",
+                                        "Boolean"
+                                    ]
+                                )
+                            )
                         },
                         EnumVariant {
                             name: "Three",
-                            attrs: []
+                            attrs: [],
+                            content: None
                         }
                     ]
                 }

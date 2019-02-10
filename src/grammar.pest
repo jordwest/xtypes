@@ -8,9 +8,10 @@ WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
 COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
 string_value = { (!("\"") ~ ANY)* }
 
+tuple = { "(" ~ ident ~ ("," ~ ident)* ~ ")" }
 
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
-variant = { attribute* ~ ident }
+variant = { attribute* ~ ident ~ tuple? }
 enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
 
 optional = { "?" }
