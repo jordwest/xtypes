@@ -1,0 +1,15 @@
+message EnumSample =
+    | #[thing.stuff = "xyz"]
+      #[json.tag = "A"]
+      One
+
+    | #[blah = "X"]
+      Two
+
+    | Three;
+
+message StructSample = {
+    field: type,
+    other?: type,
+    thing: EnumSample,
+};

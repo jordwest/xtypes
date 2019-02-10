@@ -1,0 +1,16 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+underscore = @{ "_" }
+ident = @{ alpha ~ (alpha | digit | underscore)* }
+dotted_ident = @{ alpha ~ (alpha | digit | underscore | ".")* }
+WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
+message_keyword = _{ "message" }
+
+string_value = { (!("\"") ~ ANY)* }
+
+attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
+
+variant = { attribute* ~ ident }
+enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
+
+message = { message_keyword ~ ident ~ "=" ~ enum_message ~ ";"}

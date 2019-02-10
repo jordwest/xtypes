@@ -1,0 +1,10 @@
+[package]
+name = "xtypes"
+version = "0.1.0"
+authors = ["Jordan West <jordwest@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+nom = "4.2.0"
+pest = "2.1.0"
+pest_derive = "2.1.0"
