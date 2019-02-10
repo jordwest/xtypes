@@ -13,3 +13,7 @@ message EnumSample =
 
     | Three;
 
+message StructSample = {
+    field: type,
+    optional_field?: type,
+};

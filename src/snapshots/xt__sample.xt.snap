@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T10:39:27.858461Z"
+created: "2019-02-10T10:58:17.512814Z"
 creator: insta@0.6.2
 source: src/main.rs
 expression: file
@@ -44,6 +44,27 @@ File {
                         },
                         EnumVariant {
                             name: "Three",
+                            attrs: []
+                        }
+                    ]
+                }
+            )
+        },
+        Message {
+            name: "StructSample",
+            value: Struct(
+                StructMessage {
+                    fields: [
+                        StructField {
+                            name: "field",
+                            type_name: "type",
+                            is_optional: false,
+                            attrs: []
+                        },
+                        StructField {
+                            name: "optional_field",
+                            type_name: "type",
+                            is_optional: true,
                             attrs: []
                         }
                     ]

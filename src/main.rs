@@ -72,15 +72,65 @@ mod xt {
     }
 
     #[derive(Debug, PartialEq)]
+    pub struct StructField {
+        pub name: String,
+        pub type_name: String,
+        pub is_optional: bool,
+        pub attrs: Vec<Attribute>,
+    }
+    impl From<Pair<'_, Rule>> for StructField {
+        fn from(pair: Pair<'_, Rule>) -> StructField {
+            match pair.as_rule() {
+                Rule::struct_field => {
+                    let mut name = None;
+                    let mut type_name = None;
+                    let mut is_optional = false;
+                    let mut attrs = Vec::new();
+                    for pair in pair.into_inner() {
+                        match pair.as_rule() {
+                            Rule::field_name => name = Some(pair.as_str().into()),
+                            Rule::field_type => type_name = Some(pair.as_str().into()),
+                            Rule::attribute => attrs.push(pair.into()),
+                            Rule::optional => is_optional = true,
+                            rule => panic!("Unexpected rule {}", pair.as_str()),
+                        }
+                    }
+                    StructField {
+                        name: name.unwrap(),
+                        type_name: type_name.unwrap(),
+                        is_optional,
+                        attrs,
+                    }
+                }
+                _ => panic!(),
+            }
+        }
+    }
+    #[derive(Debug, PartialEq)]
+    pub struct StructMessage {
+        pub fields: Vec<StructField>,
+    }
+    impl From<Pair<'_, Rule>> for StructMessage {
+        fn from(pair: Pair<'_, Rule>) -> StructMessage {
+            match pair.as_rule() {
+                Rule::struct_message => StructMessage {
+                    fields: pair.into_inner().into_iter().map(|i| i.into()).collect(),
+                },
+                _ => panic!(),
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
     pub enum MessageType {
         Enum(EnumMessage),
-        // Struct,
+        Struct(StructMessage),
     }
     impl From<Pair<'_, Rule>> for MessageType {
         fn from(pair: Pair<'_, Rule>) -> MessageType {
             match pair.as_rule() {
                 Rule::enum_message => MessageType::Enum(pair.into()),
-                // Rule::struct_message => MessageType::Struct(pair.into())
+                Rule::struct_message => MessageType::Struct(pair.into()),
                 _ => panic!("Unexpected message type"),
             }
         }
@@ -155,7 +205,8 @@ mod xt {
                         match pair.as_rule() {
                             Rule::module_decl => module_info = Some(pair.into()),
                             Rule::message => messages.push(pair.into()),
-                            _ => panic!(),
+                            Rule::EOI => (),
+                            _ => panic!("Unexpected '{:?}'", pair),
                         }
                     }
                     File {

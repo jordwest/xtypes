@@ -12,9 +12,16 @@ string_value = { (!("\"") ~ ANY)* }
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
 variant = { attribute* ~ ident }
 enum_message = { "|"? ~ variant ~ ("|" ~ variant)* }
+
+optional = { "?" }
+field_name = { ident }
+field_type = { ident }
+struct_field = { field_name ~ optional? ~ ":" ~ field_type ~ "," }
+struct_message = { "{" ~ struct_field* ~ "}" }
+
 message_keyword = _{ "message" }
-message = { message_keyword ~ ident ~ "=" ~ enum_message ~ ";"}
+message = { message_keyword ~ ident ~ "=" ~ (enum_message | struct_message) ~ ";"}
 
 module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 
-file = { WHITESPACE* ~ module_decl ~ message* }
+file = { WHITESPACE* ~ module_decl ~ message* ~ EOI }
