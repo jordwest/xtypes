@@ -1,0 +1,45 @@
+---
+created: "2019-02-10T10:16:32.268154Z"
+creator: insta@0.6.2
+source: src/main.rs
+expression: file
+---
+File {
+    messages: [
+        Message {
+            name: "EnumSample",
+            value: Enum(
+                EnumMessage {
+                    variants: [
+                        EnumVariant {
+                            name: "One",
+                            attrs: [
+                                Attribute {
+                                    name: "thing.stuff",
+                                    value: "xyz"
+                                },
+                                Attribute {
+                                    name: "json.tag",
+                                    value: "A"
+                                }
+                            ]
+                        },
+                        EnumVariant {
+                            name: "Two",
+                            attrs: [
+                                Attribute {
+                                    name: "blah",
+                                    value: "X"
+                                }
+                            ]
+                        },
+                        EnumVariant {
+                            name: "Three",
+                            attrs: []
+                        }
+                    ]
+                }
+            )
+        }
+    ]
+}

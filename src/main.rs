@@ -127,34 +127,11 @@ mod xt {
     }
 
     #[test]
-    fn test_parse() {
-        let file =
-            parse("message EnumSample = \n\t| #[attr.one = \"A\"] One \n\t| Two \n\t| Three;");
-        let expected = File {
-            messages: vec![Message {
-                name: "EnumSample".into(),
-                value: MessageType::Enum(EnumMessage {
-                    variants: vec![
-                        EnumVariant {
-                            name: "One".into(),
-                            attrs: vec![Attribute {
-                                name: "attr.one".into(),
-                                value: "A".into(),
-                            }],
-                        },
-                        EnumVariant {
-                            name: "Two".into(),
-                            attrs: vec![],
-                        },
-                        EnumVariant {
-                            name: "Three".into(),
-                            attrs: vec![],
-                        },
-                    ],
-                }),
-            }],
-        };
-        assert_eq!(expected, file);
+    fn test_parse_sample_1() {
+        use insta::assert_debug_snapshot_matches;
+
+        let file = parse(include_str!("./sample.xt"));
+        assert_debug_snapshot_matches!("sample.xt", file);
     }
 
     // named!(parse_enum_variant<&str, EnumVariant>,

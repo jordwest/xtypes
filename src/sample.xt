@@ -7,9 +7,3 @@ message EnumSample =
       Two
 
     | Three;
-
-message StructSample = {
-    field: type,
-    other?: type,
-    thing: EnumSample,
-};
