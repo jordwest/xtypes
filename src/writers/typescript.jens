@@ -17,13 +17,13 @@ namespace =
   }
 --
 
-struct =
+decl_struct =
   export type ${name} = {
       ${fields}
   }
 --
 
-tagged_union =
+decl_tagged_union =
   export type ${name} =
     ${variants};
 --
@@ -35,3 +35,5 @@ variant =
 variant_with_content =
   | { t: '${name}', v: ${content} }
 --
+
+generic = ${outer}<${inner}>

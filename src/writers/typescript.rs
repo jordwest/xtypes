@@ -1,24 +1,27 @@
 use crate::parser::{EnumMessage, Message, MessageType, StructMessage, Tuple, TypeName, XtFile};
-use jens::{Block, File};
+use jens::Block;
 
-pub fn make_tuple_type(t: &File, v: Tuple) -> Block {
+use jens_derive::Template;
+
+#[derive(Template)]
+#[filename = "writers/typescript.jens"]
+struct Template {}
+
+pub fn make_tuple_type(v: Tuple) -> Block {
     Block::from(format!("[{}]", v.0.join(", ")))
 }
 
-pub fn make_variants(t: &File, v: EnumMessage) -> Block {
+pub fn make_variants(v: EnumMessage) -> Block {
     Block::join_map(v.variants, |variant, _| match variant.content {
-        None => t.template("variant").set("name", variant.name),
-        Some(content) => t
-            .template("variant_with_content")
-            .set("name", variant.name)
-            .set("content", make_tuple_type(t, content)),
+        None => Template::variant(variant.name),
+        Some(content) => Template::variant_with_content(variant.name, make_tuple_type(content)),
     })
 }
 
 pub fn make_type_name(v: &TypeName) -> Block {
     match v {
         TypeName::Concrete(s) => Block::from(s.clone()),
-        TypeName::Generic(s, g) => Block::from(format!("{}<{}>", s, make_type_name(g))),
+        TypeName::Generic(s, g) => Template::generic(s.clone(), make_type_name(g)),
     }
 }
 
@@ -33,36 +36,23 @@ pub fn make_fields(v: StructMessage) -> Block {
     })
 }
 
-fn make_doc_block(t: &File, msg: &Message) -> Block {
+fn make_doc_block(msg: &Message) -> Block {
     match msg.attr("doc") {
         None => Block::empty(),
-        Some(v) => t.template("docblock").set("comment", v),
+        Some(v) => Template::docblock(v),
     }
 }
 
 pub fn write_defs(file: XtFile) -> String {
-    let t = File::parse(include_str!("./typescript.jens")).unwrap();
-
-    let output = t.template("main").set(
-        "messages",
-        Block::join_map(file.messages, |m, _| {
-            t.template("namespace")
-                .set("doc", make_doc_block(&t, &m))
-                .set("name", m.name)
-                .set(
-                    "content",
-                    match m.value {
-                        MessageType::Enum(v) => t
-                            .template("tagged_union")
-                            .set("name", "T")
-                            .set("variants", make_variants(&t, v)),
-                        MessageType::Struct(v) => t
-                            .template("struct")
-                            .set("name", "T")
-                            .set("fields", make_fields(v)),
-                    },
-                )
-        }),
-    );
+    let output = Template::main(Block::join_map(file.messages, |m, _| {
+        Template::namespace(
+            make_doc_block(&m),
+            m.name,
+            match m.value {
+                MessageType::Enum(v) => Template::decl_tagged_union("T", make_variants(v)),
+                MessageType::Struct(v) => Template::decl_struct("T", make_fields(v)),
+            },
+        )
+    }));
     format!("{}", output)
 }
