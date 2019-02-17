@@ -37,3 +37,5 @@ variant_with_content =
 --
 
 generic = ${outer}<${inner}>
+dot_t = ${var}.T
+array_type = ${type}[]

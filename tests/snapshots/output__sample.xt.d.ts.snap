@@ -1,5 +1,5 @@
 ---
-created: "2019-02-10T21:26:04.012444Z"
+created: "2019-02-17T06:35:25.090843Z"
 creator: insta@0.6.2
 source: tests/output.rs
 expression: defs
@@ -20,7 +20,7 @@ export namespace EnumSample {
  */
 export namespace StructSample {
   export type T = {
-      repeated_field: Thing<Array<Type>>
-      optional_field?: type
+      repeated_field: Thing.T<Type.T[]>
+      optional_field?: type.T
   }
 }
