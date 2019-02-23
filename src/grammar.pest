@@ -27,4 +27,6 @@ message = { attribute* ~ message_keyword ~ ident ~ "=" ~ (enum_message | struct_
 
 module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 
-file = { WHITESPACE* ~ module_decl ~ message* ~ EOI }
+import = { attribute* ~ "import" ~ "\"" ~ string_value ~ "\"" ~ ";"}
+
+file = { WHITESPACE* ~ module_decl ~ import* ~ message* ~ EOI }

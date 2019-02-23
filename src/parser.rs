@@ -250,8 +250,37 @@ impl From<Pair<'_, Rule>> for ModuleInfo {
 }
 
 #[derive(Debug, PartialEq)]
+pub struct ModuleImport {
+    pub path: String,
+    pub attrs: Vec<Attribute>,
+}
+impl From<Pair<'_, Rule>> for ModuleImport {
+    fn from(pair: Pair<'_, Rule>) -> ModuleImport {
+        match pair.as_rule() {
+            Rule::import => {
+                let mut path = "";
+                let mut attrs = vec![];
+                for pair in pair.into_inner() {
+                    match pair.as_rule() {
+                        Rule::string_value => path = pair.as_str(),
+                        Rule::attribute => attrs.push(pair.into()),
+                        _ => panic!("Unexpected rule"),
+                    }
+                }
+                ModuleImport {
+                    path: path.into(),
+                    attrs,
+                }
+            }
+            unknown => panic!("Unexpected rule '{:?}' found ", unknown),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq)]
 pub struct XtFile {
     pub module_info: ModuleInfo,
+    pub imports: Vec<ModuleImport>,
     pub messages: Vec<Message>,
 }
 impl From<Pair<'_, Rule>> for XtFile {
@@ -259,17 +288,20 @@ impl From<Pair<'_, Rule>> for XtFile {
         match pair.as_rule() {
             Rule::file => {
                 let mut messages = vec![];
+                let mut imports = vec![];
                 let mut module_info = None;
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::module_decl => module_info = Some(pair.into()),
                         Rule::message => messages.push(pair.into()),
+                        Rule::import => imports.push(pair.into()),
                         Rule::EOI => (),
                         _ => panic!("Unexpected '{:?}'", pair),
                     }
                 }
                 XtFile {
                     module_info: module_info.unwrap(),
+                    imports: imports,
                     messages: messages,
                 }
             }

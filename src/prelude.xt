@@ -1,0 +1,18 @@
+// This module defines special types handled by the code generator or target language
+module XTypes.Prelude;
+
+#[js.type = "boolean"]
+#[rust.type = "bool"]
+type boolean;
+
+#[js.type = "string"]
+#[rust.type = "String"]
+type string;
+
+#[js.type = "number"]
+#[rust.type = "f32"]
+type float32;
+
+type Option<T>;
+
+type Array<T>;

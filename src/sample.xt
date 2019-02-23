@@ -1,6 +1,7 @@
-
 #[output="/sample/test/somefile.txt"]
 module Sample.Test;
+
+import "./prelude.xt";
 
 #[doc = "This message could be one of three shapes"]
 message EnumSample =
@@ -18,7 +19,7 @@ message EnumSample =
 #[http.method = "GET"]
 message StructSample = {
     #[json.key = "X"]
-    repeated_field: Thing<Array<Type>>,
+    repeated_field: Thing<Array<string>>,
 
     #[json.key = "Y"]
     optional_field?: type,
