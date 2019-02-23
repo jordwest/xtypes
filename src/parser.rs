@@ -1,16 +1,14 @@
+use crate::ast::*;
 use pest::iterators::Pair;
 use pest::Parser;
 use pest_derive::Parser;
+
+///! The parser takes a `.xt` file and parses it into an AST
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
 pub struct XtParser;
 
-#[derive(Debug, PartialEq)]
-pub struct Attribute {
-    pub name: String,
-    pub value: String,
-}
 impl From<Pair<'_, Rule>> for Attribute {
     fn from(pair: Pair<'_, Rule>) -> Attribute {
         match pair.as_rule() {
@@ -26,8 +24,6 @@ impl From<Pair<'_, Rule>> for Attribute {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct Tuple(pub Vec<String>);
 impl From<Pair<'_, Rule>> for Tuple {
     fn from(pair: Pair<'_, Rule>) -> Tuple {
         let mut types = vec![];
@@ -39,13 +35,6 @@ impl From<Pair<'_, Rule>> for Tuple {
         }
         Tuple(types)
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub struct EnumVariant {
-    pub name: String,
-    pub attrs: Vec<Attribute>,
-    pub content: Option<Tuple>,
 }
 impl From<Pair<'_, Rule>> for EnumVariant {
     fn from(pair: Pair<'_, Rule>) -> EnumVariant {
@@ -73,10 +62,6 @@ impl From<Pair<'_, Rule>> for EnumVariant {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct EnumMessage {
-    pub variants: Vec<EnumVariant>,
-}
 impl From<Pair<'_, Rule>> for EnumMessage {
     fn from(pair: Pair<'_, Rule>) -> EnumMessage {
         match pair.as_rule() {
@@ -88,11 +73,6 @@ impl From<Pair<'_, Rule>> for EnumMessage {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub enum TypeName {
-    Concrete(String),
-    Generic(String, Box<TypeName>),
-}
 impl From<Pair<'_, Rule>> for TypeName {
     fn from(pair: Pair<'_, Rule>) -> TypeName {
         let pair = pair.into_inner().next().unwrap();
@@ -113,14 +93,6 @@ impl From<Pair<'_, Rule>> for TypeName {
             _ => panic!(),
         }
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub struct StructField {
-    pub name: String,
-    pub type_name: TypeName,
-    pub is_optional: bool,
-    pub attrs: Vec<Attribute>,
 }
 impl From<Pair<'_, Rule>> for StructField {
     fn from(pair: Pair<'_, Rule>) -> StructField {
@@ -150,10 +122,7 @@ impl From<Pair<'_, Rule>> for StructField {
         }
     }
 }
-#[derive(Debug, PartialEq)]
-pub struct StructMessage {
-    pub fields: Vec<StructField>,
-}
+
 impl From<Pair<'_, Rule>> for StructMessage {
     fn from(pair: Pair<'_, Rule>) -> StructMessage {
         match pair.as_rule() {
@@ -163,12 +132,6 @@ impl From<Pair<'_, Rule>> for StructMessage {
             _ => panic!(),
         }
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub enum MessageType {
-    Enum(EnumMessage),
-    Struct(StructMessage),
 }
 impl From<Pair<'_, Rule>> for MessageType {
     fn from(pair: Pair<'_, Rule>) -> MessageType {
@@ -180,12 +143,6 @@ impl From<Pair<'_, Rule>> for MessageType {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct Message {
-    pub name: String,
-    pub attrs: Vec<Attribute>,
-    pub value: MessageType,
-}
 impl Message {
     pub fn attr(&self, key: &str) -> Option<String> {
         for attr in &self.attrs {
@@ -220,12 +177,6 @@ impl From<Pair<'_, Rule>> for Message {
         }
     }
 }
-
-#[derive(Debug, PartialEq)]
-pub struct ModuleInfo {
-    pub name: String,
-    pub attrs: Vec<Attribute>,
-}
 impl From<Pair<'_, Rule>> for ModuleInfo {
     fn from(pair: Pair<'_, Rule>) -> ModuleInfo {
         match pair.as_rule() {
@@ -249,11 +200,6 @@ impl From<Pair<'_, Rule>> for ModuleInfo {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct ModuleImport {
-    pub path: String,
-    pub attrs: Vec<Attribute>,
-}
 impl From<Pair<'_, Rule>> for ModuleImport {
     fn from(pair: Pair<'_, Rule>) -> ModuleImport {
         match pair.as_rule() {
@@ -277,12 +223,6 @@ impl From<Pair<'_, Rule>> for ModuleImport {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct XtFile {
-    pub module_info: ModuleInfo,
-    pub imports: Vec<ModuleImport>,
-    pub messages: Vec<Message>,
-}
 impl From<Pair<'_, Rule>> for XtFile {
     fn from(pair: Pair<'_, Rule>) -> XtFile {
         match pair.as_rule() {

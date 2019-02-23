@@ -1,4 +1,4 @@
-use crate::parser::{MessageType, XtFile};
+use crate::ast::*;
 use jens::Block;
 
 use jens_derive::Template;
@@ -9,7 +9,7 @@ struct Template {}
 
 mod gen {
     use super::Template;
-    use crate::parser::{EnumVariant, Message, StructField, Tuple, TypeName};
+    use crate::ast::*;
     use jens::Block;
 
     pub fn tuple_type(v: Tuple) -> Block {
