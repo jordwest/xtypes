@@ -1,0 +1,17 @@
+---
+created: "2019-02-27T08:32:29.194221Z"
+creator: insta@0.6.3
+source: tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+
+pub enum EnumSample {
+    One
+    Two(StructSample,Boolean)
+    Three
+}
+pub struct T {
+  pub repeated_field: Thing<Array<string>>,
+  pub optional_field: Option<type>,
+}

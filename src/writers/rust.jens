@@ -1,0 +1,25 @@
+main =
+  // This file was generated automatically
+
+  ${messages}
+--
+
+docblock =
+  /// ${comment}
+--
+
+decl_struct =
+  pub struct ${name} {
+    ${fields}
+  }
+--
+
+decl_tagged_union =
+  pub enum ${name} {
+      ${variants}
+  }
+--
+
+variant              = ${name}
+variant_with_content = ${name}(${content})
+generic              = ${outer}<${inner}>
