@@ -12,13 +12,13 @@ mod gen {
     use crate::parser::{EnumVariant, Message, StructField, Tuple, TypeName};
     use jens::Block;
 
-    pub fn tuple_types(v: Tuple) -> Block {
+    pub fn tuple_types(v: &Tuple) -> Block {
         Block::from(v.0.join(","))
     }
-    pub fn variant(v: EnumVariant) -> Block {
-        match v.content {
-            None => Template::variant(v.name),
-            Some(content) => Template::variant_with_content(v.name, tuple_types(content)),
+    pub fn variant(v: &EnumVariant) -> Block {
+        match &v.content {
+            None => Template::variant(v.name.clone()),
+            Some(content) => Template::variant_with_content(v.name.clone(), tuple_types(&content)),
         }
     }
 
@@ -29,7 +29,7 @@ mod gen {
         }
     }
 
-    pub fn struct_field(field: StructField) -> Block {
+    pub fn struct_field(field: &StructField) -> Block {
         Block::from(if field.is_optional {
             format!(
                 "pub {}: Option<{}>,",
@@ -50,13 +50,17 @@ mod gen {
 }
 
 pub fn write_defs(file: XtFile) -> String {
-    let output = Template::main(Block::join_map(file.messages, |m, _| match m.value {
-        MessageType::Enum(v) => {
-            Template::decl_tagged_union(m.name, Block::join_map(v.variants, |v, _| gen::variant(v)))
-        }
-        MessageType::Struct(s) => {
-            Template::decl_struct("T", Block::join_map(s.fields, |f, _| gen::struct_field(f)))
-        }
+    let output = Template::main(Block::join_map(file.messages, |m, _| match &m.value {
+        MessageType::Enum(v) => Template::decl_tagged_union(
+            gen::docblock(&m),
+            Block::from(m.name),
+            Block::join_map(&v.variants, |v, _| gen::variant(v)),
+        ),
+        MessageType::Struct(s) => Template::decl_struct(
+            gen::docblock(&m),
+            Block::from(m.name),
+            Block::join_map(&s.fields, |f, _| gen::struct_field(f)),
+        ),
     }));
     format!("{}", output)
 }

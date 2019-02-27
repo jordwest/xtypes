@@ -1,5 +1,6 @@
 main =
   // This file was generated automatically
+  use serde_json::json;
 
   ${messages}
 --
@@ -9,12 +10,18 @@ docblock =
 --
 
 decl_struct =
+  
+  ${doc}
+  #[derive(Serialize, Deserialize)]
   pub struct ${name} {
     ${fields}
   }
 --
 
 decl_tagged_union =
+  
+  ${doc}
+  #[derive(Serialize, Deserialize)]
   pub enum ${name} {
       ${variants}
   }

@@ -1,17 +1,24 @@
 ---
-created: "2019-02-27T08:32:29.194221Z"
+created: "2019-02-27T08:59:59.250724Z"
 creator: insta@0.6.3
 source: tests/output.rs
 expression: defs
 ---
 // This file was generated automatically
+use serde_json::json;
 
+
+/// This message could be one of three shapes
+#[derive(Serialize, Deserialize)]
 pub enum EnumSample {
     One
     Two(StructSample,Boolean)
     Three
 }
-pub struct T {
+
+/// Example of a struct/record type
+#[derive(Serialize, Deserialize)]
+pub struct StructSample {
   pub repeated_field: Thing<Array<string>>,
   pub optional_field: Option<type>,
 }
