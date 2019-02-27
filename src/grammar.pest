@@ -29,4 +29,6 @@ module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 
 import = { attribute* ~ "import" ~ "\"" ~ string_value ~ "\"" ~ ";"}
 
-file = { WHITESPACE* ~ module_decl ~ import* ~ message* ~ EOI }
+typedef = { attribute* ~ "type" ~ type_name ~ ";" }
+
+file = { WHITESPACE* ~ module_decl ~ import* ~ (message | typedef)* ~ EOI }

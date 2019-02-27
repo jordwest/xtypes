@@ -235,6 +235,7 @@ impl From<Pair<'_, Rule>> for XtFile {
                         Rule::module_decl => module_info = Some(pair.into()),
                         Rule::message => messages.push(pair.into()),
                         Rule::import => imports.push(pair.into()),
+                        Rule::typedef => println!("Unhandled typedef"),
                         Rule::EOI => (),
                         _ => panic!("Unexpected '{:?}'", pair),
                     }

@@ -1,0 +1,137 @@
+---
+created: "2019-02-27T09:26:14.953610Z"
+creator: insta@0.6.2
+source: src/linker.rs
+expression: files
+---
+{
+    "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/sample.xt": XtFile {
+        module_info: ModuleInfo {
+            name: "Sample.Test",
+            attrs: [
+                Attribute {
+                    name: "output",
+                    value: "/sample/test/somefile.txt"
+                }
+            ]
+        },
+        imports: [
+            ModuleImport {
+                path: "./prelude.xt",
+                attrs: []
+            }
+        ],
+        messages: [
+            Message {
+                name: "EnumSample",
+                attrs: [
+                    Attribute {
+                        name: "doc",
+                        value: "This message could be one of three shapes"
+                    }
+                ],
+                value: Enum(
+                    EnumMessage {
+                        variants: [
+                            EnumVariant {
+                                name: "One",
+                                attrs: [
+                                    Attribute {
+                                        name: "thing.stuff",
+                                        value: "xyz"
+                                    },
+                                    Attribute {
+                                        name: "json.tag",
+                                        value: "A"
+                                    }
+                                ],
+                                content: None
+                            },
+                            EnumVariant {
+                                name: "Two",
+                                attrs: [
+                                    Attribute {
+                                        name: "blah",
+                                        value: "X"
+                                    }
+                                ],
+                                content: Some(
+                                    Tuple(
+                                        [
+                                            "StructSample",
+                                            "Boolean"
+                                        ]
+                                    )
+                                )
+                            },
+                            EnumVariant {
+                                name: "Three",
+                                attrs: [],
+                                content: None
+                            }
+                        ]
+                    }
+                )
+            },
+            Message {
+                name: "StructSample",
+                attrs: [
+                    Attribute {
+                        name: "doc",
+                        value: "Example of a struct/record type"
+                    },
+                    Attribute {
+                        name: "http.method",
+                        value: "GET"
+                    }
+                ],
+                value: Struct(
+                    StructMessage {
+                        fields: [
+                            StructField {
+                                name: "repeated_field",
+                                type_name: Generic(
+                                    "Thing",
+                                    Generic(
+                                        "Array",
+                                        Concrete(
+                                            "string"
+                                        )
+                                    )
+                                ),
+                                is_optional: false,
+                                attrs: [
+                                    Attribute {
+                                        name: "json.key",
+                                        value: "X"
+                                    }
+                                ]
+                            },
+                            StructField {
+                                name: "optional_field",
+                                type_name: Concrete(
+                                    "type"
+                                ),
+                                is_optional: true,
+                                attrs: [
+                                    Attribute {
+                                        name: "json.key",
+                                        value: "Y"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                )
+            }
+        ]
+    },
+    "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/prelude.xt": XtFile {
+        module_info: ModuleInfo {
+            name: "XTypes.Prelude",
+            attrs: []
+        },
+        imports: [],
+        messages: []
+    }
+}
