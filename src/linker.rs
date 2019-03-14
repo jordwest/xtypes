@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
+#[derive(Debug)]
 pub enum SymbolDefinition {
     /// A primitive is a symbol that is implicitly understood by the code generator.
     ///
@@ -18,50 +19,96 @@ pub enum SymbolDefinition {
     Message(Message),
 }
 
+#[derive(Debug)]
 pub struct Symbol {
     pub namespace: String,
     pub name: String,
     pub symbol_definition: SymbolDefinition,
 }
 
-pub struct SymbolStore<'a> {
-    /// Keyed by (namespace, name)
-    symbols: HashMap<(Cow<'a, String>, Cow<'a, String>), Symbol>,
+pub struct Namespace {
+    pub symbols: HashMap<String, Symbol>,
 }
 
-impl<'a> SymbolStore<'a> {
+impl Namespace {
     fn new() -> Self {
-        SymbolStore {
+        Namespace {
             symbols: HashMap::new(),
         }
     }
 
-    fn add_symbol(store: &mut SymbolStore, symbol: Symbol) {
-        let key = (
-            Cow::Borrowed(&symbol.namespace),
-            Cow::Borrowed(&symbol.name),
-        );
-        store.symbols.insert(key, symbol);
+    fn add_symbol(&mut self, symbol: Symbol) {
+        self.symbols.insert(symbol.name.clone(), symbol);
     }
 
-    fn get_symbol(store: &mut SymbolStore, namespace: Cow<String>, name: Cow<String>) {
-        let key = (namespace, name);
-        store.symbols.get(&key);
+    fn get_symbol(&self, name: &str) -> Option<&Symbol> {
+        self.symbols.get(name)
+    }
+}
+
+pub struct SymbolMap {
+    pub namespaces: HashMap<String, Namespace>,
+}
+
+impl SymbolMap {
+    fn new() -> Self {
+        SymbolMap {
+            namespaces: HashMap::new(),
+        }
+    }
+
+    fn add_symbol(&mut self, symbol: Symbol) {
+        let namespace = self
+            .namespaces
+            .entry(symbol.namespace.clone())
+            .or_insert(Namespace::new());
+
+        namespace.add_symbol(symbol);
+    }
+
+    fn get_symbol(&self, namespace: &str, name: &str) -> Option<&Symbol> {
+        let namespace = self.namespaces.get(namespace)?;
+
+        namespace.get_symbol(name)
     }
 }
 
 #[test]
-fn test_symbol_store() {
+fn test_symbol_map() {
+    use insta::assert_debug_snapshot_matches;
+
     let symbol = Symbol {
         namespace: String::from("App.Namespace"),
         name: String::from("Message"),
         symbol_definition: SymbolDefinition::Primitive,
     };
+
+    let symbol2 = Symbol {
+        namespace: String::from("App.Other"),
+        name: String::from("Primitive"),
+        symbol_definition: SymbolDefinition::Primitive,
+    };
+
+    let mut map = SymbolMap::new();
+    map.add_symbol(symbol);
+    map.add_symbol(symbol2);
+    assert_debug_snapshot_matches!(
+        "test_symbol_map finds symbol",
+        map.get_symbol("App.Namespace", "Message")
+    );
+    assert_debug_snapshot_matches!(
+        "test_symbol_map finds symbol2",
+        map.get_symbol("App.Other", "Primitive")
+    );
+    assert_debug_snapshot_matches!(
+        "test_symbol_map does not find symbol in non existent namespace",
+        map.get_symbol("MissingNamespace", "Message")
+    );
 }
 
-pub struct ModuleResult<'a> {
+pub struct ModuleResult {
     /// Symbols defined in this module and all imported modules
-    pub symbol_lookup: SymbolStore<'a>,
+    pub symbol_lookup: SymbolMap,
 
     pub entry_file: XtFile,
 }
@@ -92,12 +139,12 @@ fn test_load_file_and_imports() {
 }
 
 /// This is the main function used to load and parse `xt` files and their imports.
-pub fn load_module<'a>(filename: String) -> ModuleResult<'a> {
+pub fn load_module<'a>(filename: String) -> ModuleResult {
     let entry_file_src = fs::read_to_string(&filename).unwrap();
     let entry_file = parse(&entry_file_src);
     // let imports: Vec<XtFile> = vec![];
     ModuleResult {
-        symbol_lookup: SymbolStore::new(),
+        symbol_lookup: SymbolMap::new(),
         entry_file,
     }
 }

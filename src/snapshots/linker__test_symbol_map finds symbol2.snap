@@ -1,0 +1,13 @@
+---
+created: "2019-03-14T08:25:46.240126Z"
+creator: insta@0.6.2
+source: src/linker.rs
+expression: "map.get_symbol(\"App.Other\", \"Primitive\")"
+---
+Some(
+    Symbol {
+        namespace: "App.Other",
+        name: "Primitive",
+        symbol_definition: Primitive
+    }
+)
