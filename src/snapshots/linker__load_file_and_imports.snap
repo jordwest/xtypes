@@ -1,10 +1,18 @@
 ---
-created: "2019-02-27T09:26:14.953610Z"
+created: "2019-03-14T09:04:55.390381Z"
 creator: insta@0.6.2
 source: src/linker.rs
 expression: files
 ---
 {
+    "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/prelude.xt": XtFile {
+        module_info: ModuleInfo {
+            name: "XTypes.Prelude",
+            attrs: []
+        },
+        imports: [],
+        messages: []
+    },
     "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/sample.xt": XtFile {
         module_info: ModuleInfo {
             name: "Sample.Test",
@@ -125,13 +133,5 @@ expression: files
                 )
             }
         ]
-    },
-    "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/prelude.xt": XtFile {
-        module_info: ModuleInfo {
-            name: "XTypes.Prelude",
-            attrs: []
-        },
-        imports: [],
-        messages: []
     }
 }

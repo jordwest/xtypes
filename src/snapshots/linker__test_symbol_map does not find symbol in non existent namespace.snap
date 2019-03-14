@@ -1,0 +1,7 @@
+---
+created: "2019-03-14T08:25:55.341470Z"
+creator: insta@0.6.2
+source: src/linker.rs
+expression: "map.get_symbol(\"MissingNamespace\", \"Message\")"
+---
+None
