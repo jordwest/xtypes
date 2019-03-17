@@ -1,6 +1,5 @@
 use crate::ast::*;
 use crate::parser::parse;
-use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
@@ -132,10 +131,14 @@ pub fn load_file_and_imports(absolute_filename: PathBuf, files: &mut HashMap<Pat
 #[test]
 fn test_load_file_and_imports() {
     use insta::assert_debug_snapshot_matches;
+    use std::collections::BTreeMap;
     let file_path = PathBuf::from("./src/sample.xt").canonicalize().unwrap();
     let mut files = HashMap::new();
-    let modules = load_file_and_imports(file_path, &mut files);
-    assert_debug_snapshot_matches!("load_file_and_imports", files);
+    let _ = load_file_and_imports(file_path, &mut files);
+
+    // Keys need to be sorted so snapshot matches every time
+    let ordered: BTreeMap<_, _> = files.iter().collect();
+    assert_debug_snapshot_matches!("load_file_and_imports", ordered);
 }
 
 /// This is the main function used to load and parse `xt` files and their imports.
