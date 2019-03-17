@@ -6,6 +6,7 @@ message Book = {
     title: string,
     author: string,
     isbn: string,
+    media: Media,
 };
 
 message Media =
