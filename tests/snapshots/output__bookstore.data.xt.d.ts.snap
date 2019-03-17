@@ -1,0 +1,42 @@
+---
+created: "2019-03-17T03:10:58.542911Z"
+creator: insta@0.6.2
+source: tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+
+
+export namespace Book {
+  export type T = {
+      id: string.T
+      title: string.T
+      author: string.T
+      isbn: string.T
+  }
+}
+
+export namespace Media {
+  export type T =
+    | { t: 'EBook', v: [EBook] }
+    | { t: 'AudioBook', v: [AudioBook] }
+    | { t: 'PhysicalBook', v: [PhysicalBook] };
+}
+
+export namespace EBook {
+  export type T = {
+      filesize: float32.T
+  }
+}
+
+export namespace AudioBook {
+  export type T = {
+      length: float32.T
+  }
+}
+
+export namespace PhysicalBook {
+  export type T = {
+      pages: int32.T
+  }
+}

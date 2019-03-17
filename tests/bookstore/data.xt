@@ -1,0 +1,29 @@
+module Bookstore.Data;
+// import "./prelude.xt";
+
+message Book = {
+    id: string,
+    title: string,
+    author: string,
+    isbn: string,
+};
+
+message Media =
+    | EBook(EBook)
+    | AudioBook(AudioBook)
+    | PhysicalBook(PhysicalBook)
+;
+
+message EBook = {
+    filesize: float32,
+};
+
+message AudioBook = {
+    /// Length of the audiobook in seconds
+    length: float32,
+};
+
+message PhysicalBook = {
+    /// Number 
+    pages: int32,
+};

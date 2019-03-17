@@ -13,6 +13,10 @@ type string;
 #[rust.type = "f32"]
 type float32;
 
+#[js.type = "number"]
+#[rust.type = "i32"]
+type int32;
+
 type Option<T>;
 
 type Array<T>;
