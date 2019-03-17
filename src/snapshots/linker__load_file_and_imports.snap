@@ -1,8 +1,8 @@
 ---
-created: "2019-03-14T09:04:55.390381Z"
+created: "2019-03-17T03:13:40.380889Z"
 creator: insta@0.6.2
 source: src/linker.rs
-expression: files
+expression: ordered
 ---
 {
     "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/prelude.xt": XtFile {

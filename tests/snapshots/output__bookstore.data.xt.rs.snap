@@ -1,0 +1,44 @@
+---
+created: "2019-03-17T03:10:58.542880Z"
+creator: insta@0.6.2
+source: tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+use serde_json::json;
+
+
+
+#[derive(Serialize, Deserialize)]
+pub struct Book {
+  pub id: string,
+  pub title: string,
+  pub author: string,
+  pub isbn: string,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub enum Media {
+    EBook(EBook)
+    AudioBook(AudioBook)
+    PhysicalBook(PhysicalBook)
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct EBook {
+  pub filesize: float32,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct AudioBook {
+  pub length: float32,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct PhysicalBook {
+  pub pages: int32,
+}
