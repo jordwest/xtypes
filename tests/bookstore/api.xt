@@ -1,0 +1,11 @@
+use XTypes.Prelude.*;
+use Bookstore.Data.*;
+
+message FindBooksRequest = {
+    /// Optional query 
+    query: Option<string>,
+}
+
+message FindBooksResponse = {
+    books: Array<Book>,
+}
