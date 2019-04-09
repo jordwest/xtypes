@@ -1,5 +1,5 @@
 module Bookstore.Data;
-// import "./prelude.xt";
+// use XTypes.Prelude.*;
 
 message Book = {
     id: string,
@@ -25,6 +25,6 @@ message AudioBook = {
 };
 
 message PhysicalBook = {
-    /// Number 
+    /// Number
     pages: int32,
 };
