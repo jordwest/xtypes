@@ -1,5 +1,5 @@
 ---
-created: "2019-03-17T03:13:40.380889Z"
+created: "2019-04-10T22:13:11.393209Z"
 creator: insta@0.6.2
 source: src/linker.rs
 expression: ordered
@@ -11,6 +11,7 @@ expression: ordered
             attrs: []
         },
         imports: [],
+        use_imports: [],
         messages: []
     },
     "/Users/jordan/Projects/src/github.com/jordwest/xtypes/src/sample.xt": XtFile {
@@ -27,6 +28,12 @@ expression: ordered
             ModuleImport {
                 path: "./prelude.xt",
                 attrs: []
+            }
+        ],
+        use_imports: [
+            ModuleUse {
+                attrs: [],
+                path: "Prelude.*"
             }
         ],
         messages: [

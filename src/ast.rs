@@ -90,6 +90,12 @@ pub struct ModuleInfo {
 }
 
 #[derive(Debug, PartialEq)]
+pub struct ModuleUse {
+    pub attrs: Vec<Attribute>,
+    pub path: String,
+}
+
+#[derive(Debug, PartialEq)]
 pub struct ModuleImport {
     pub path: String,
     pub attrs: Vec<Attribute>,
@@ -105,5 +111,6 @@ pub enum TypeName {
 pub struct XtFile {
     pub module_info: ModuleInfo,
     pub imports: Vec<ModuleImport>,
+    pub use_imports: Vec<ModuleUse>,
     pub messages: Vec<Message>,
 }

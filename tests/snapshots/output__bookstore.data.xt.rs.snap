@@ -1,5 +1,5 @@
 ---
-created: "2019-03-17T03:10:58.542880Z"
+created: "2019-04-10T22:13:24.941180Z"
 creator: insta@0.6.2
 source: tests/output.rs
 expression: defs
@@ -15,6 +15,7 @@ pub struct Book {
   pub title: string,
   pub author: string,
   pub isbn: string,
+  pub media: Media,
 }
 
 
