@@ -30,8 +30,8 @@ impl FileModuleLoader {
         }
     }
 }
-impl ModuleLoader for FileModuleLoader {
-    fn load_module(&self, name: AsRef<str>) -> XtFile {
-        self
-    }
-}
+// impl ModuleLoader for FileModuleLoader {
+//     fn load_module(&self, name: AsRef<str>) -> XtFile {
+//         self
+//     }
+// }

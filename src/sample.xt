@@ -3,6 +3,8 @@ module Sample.Test;
 
 import "./prelude.xt";
 
+use Prelude.*;
+
 #[doc = "This message could be one of three shapes"]
 message EnumSample =
     // First one

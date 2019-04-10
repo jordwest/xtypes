@@ -223,18 +223,43 @@ impl From<Pair<'_, Rule>> for ModuleImport {
     }
 }
 
+impl From<Pair<'_, Rule>> for ModuleUse {
+    fn from(pair: Pair<'_, Rule>) -> ModuleUse {
+        match pair.as_rule() {
+            Rule::use_statement => {
+                let mut path = "";
+                let mut attrs = vec![];
+                for pair in pair.into_inner() {
+                    match pair.as_rule() {
+                        Rule::dotted_ident => path = pair.as_str(),
+                        Rule::attribute => attrs.push(pair.into()),
+                        _ => panic!("Unexpected rule"),
+                    }
+                }
+                ModuleUse {
+                    attrs,
+                    path: path.into(),
+                }
+            }
+            unknown => panic!("Unexpected rule '{:?}' found ", unknown),
+        }
+    }
+}
+
 impl From<Pair<'_, Rule>> for XtFile {
     fn from(pair: Pair<'_, Rule>) -> XtFile {
         match pair.as_rule() {
             Rule::file => {
                 let mut messages = vec![];
                 let mut imports = vec![];
+                let mut use_imports = vec![];
                 let mut module_info = None;
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::module_decl => module_info = Some(pair.into()),
                         Rule::message => messages.push(pair.into()),
                         Rule::import => imports.push(pair.into()),
+                        Rule::use_statement => use_imports.push(pair.into()),
                         Rule::typedef => println!("Unhandled typedef"),
                         Rule::EOI => (),
                         _ => panic!("Unexpected '{:?}'", pair),
@@ -244,6 +269,7 @@ impl From<Pair<'_, Rule>> for XtFile {
                     module_info: module_info.unwrap(),
                     imports: imports,
                     messages: messages,
+                    use_imports,
                 }
             }
             _ => panic!(),

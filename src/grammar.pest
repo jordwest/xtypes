@@ -2,7 +2,9 @@ alpha = { 'a'..'z' | 'A'..'Z' }
 digit = { '0'..'9' }
 underscore = @{ "_" }
 ident = @{ alpha ~ (alpha | digit | underscore)* }
-dotted_ident = @{ alpha ~ (alpha | digit | underscore | ".")* }
+wildcard = { "*" }
+dotted_ident = @{ ident ~ ("." ~ (ident | wildcard))* }
+
 WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
 // COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
@@ -29,6 +31,8 @@ module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 
 import = { attribute* ~ "import" ~ "\"" ~ string_value ~ "\"" ~ ";"}
 
+use_statement = { attribute* ~ "use" ~ WHITESPACE* ~ dotted_ident ~ ";" }
+
 typedef = { attribute* ~ "type" ~ type_name ~ ";" }
 
-file = { WHITESPACE* ~ module_decl ~ import* ~ (message | typedef)* ~ EOI }
+file = { WHITESPACE* ~ module_decl ~ import* ~ use_statement* ~ (message | typedef)* ~ EOI }
