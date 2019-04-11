@@ -1,5 +1,5 @@
 ---
-created: "2019-04-10T22:13:11.393041Z"
+created: "2019-04-11T22:28:19.215620Z"
 creator: insta@0.6.2
 source: src/parser.rs
 expression: file
@@ -23,7 +23,14 @@ XtFile {
     use_imports: [
         ModuleUse {
             attrs: [],
-            path: "Prelude.*"
+            dotted_ident: DottedIdent {
+                parts: [
+                    Ident(
+                        "Prelude"
+                    ),
+                    Wildcard
+                ]
+            }
         }
     ],
     messages: [

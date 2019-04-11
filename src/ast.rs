@@ -3,7 +3,7 @@
 ///  - A field
 ///  - An enum variant
 ///  - A module
-///  - An import
+///  - A use statement
 ///
 /// Attributes can be used by the code generator in any way
 /// they're needed.
@@ -89,10 +89,33 @@ pub struct ModuleInfo {
     pub attrs: Vec<Attribute>,
 }
 
+/// A portion of a [DottedIdent](xtypes::ast::DottedIdent).
+#[derive(Debug, PartialEq)]
+pub enum DottedIdentPart {
+    Ident(String),
+    Wildcard,
+}
+
+/// A DottedIdent refers to a dotted variable name. For example:
+///
+/// ```xt
+/// use SomeModule.SubModule.*;
+/// //  ^^^^^^^^^^^^^^^^^^^^^^
+/// ```
+///
+/// The above statement would contain 3 "parts":
+///   - Ident("SomeModule")
+///   - Ident("SubModule")
+///   - Wildcard
+#[derive(Debug, PartialEq)]
+pub struct DottedIdent {
+    pub parts: Vec<DottedIdentPart>,
+}
+
 #[derive(Debug, PartialEq)]
 pub struct ModuleUse {
     pub attrs: Vec<Attribute>,
-    pub path: String,
+    pub dotted_ident: DottedIdent,
 }
 
 #[derive(Debug, PartialEq)]
