@@ -3,7 +3,7 @@ digit = { '0'..'9' }
 underscore = @{ "_" }
 ident = @{ alpha ~ (alpha | digit | underscore)* }
 wildcard = { "*" }
-dotted_ident = @{ ident ~ ("." ~ (ident | wildcard))* }
+dotted_ident = ${ ident ~ ("." ~ (ident | wildcard))* }
 
 WHITESPACE = _{ (" " | "\t" | "\r" | "\n") }
 // COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }

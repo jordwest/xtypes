@@ -1,5 +1,5 @@
 ---
-created: "2019-04-10T22:13:11.393209Z"
+created: "2019-04-11T22:28:19.215642Z"
 creator: insta@0.6.2
 source: src/linker.rs
 expression: ordered
@@ -33,7 +33,14 @@ expression: ordered
         use_imports: [
             ModuleUse {
                 attrs: [],
-                path: "Prelude.*"
+                dotted_ident: DottedIdent {
+                    parts: [
+                        Ident(
+                            "Prelude"
+                        ),
+                        Wildcard
+                    ]
+                }
             }
         ],
         messages: [

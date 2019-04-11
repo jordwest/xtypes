@@ -223,22 +223,43 @@ impl From<Pair<'_, Rule>> for ModuleImport {
     }
 }
 
+impl From<Pair<'_, Rule>> for DottedIdent {
+    fn from(pair: Pair<'_, Rule>) -> DottedIdent {
+        match pair.as_rule() {
+            Rule::dotted_ident => {
+                let mut parts = vec![];
+                println!("Outer: {}", pair.as_str());
+                for pair in pair.into_inner() {
+                    println!("Pair: {}", pair.as_str());
+                    match pair.as_rule() {
+                        Rule::ident => parts.push(DottedIdentPart::Ident(pair.as_str().into())),
+                        Rule::wildcard => parts.push(DottedIdentPart::Wildcard),
+                        _ => panic!("Unexpected rule"),
+                    }
+                }
+                DottedIdent { parts }
+            }
+            unknown => panic!("Unexpected rule '{:?}' found ", unknown),
+        }
+    }
+}
+
 impl From<Pair<'_, Rule>> for ModuleUse {
     fn from(pair: Pair<'_, Rule>) -> ModuleUse {
         match pair.as_rule() {
             Rule::use_statement => {
-                let mut path = "";
+                let mut dotted_ident = None;
                 let mut attrs = vec![];
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
-                        Rule::dotted_ident => path = pair.as_str(),
+                        Rule::dotted_ident => dotted_ident = Some(pair.into()),
                         Rule::attribute => attrs.push(pair.into()),
                         _ => panic!("Unexpected rule"),
                     }
                 }
                 ModuleUse {
                     attrs,
-                    path: path.into(),
+                    dotted_ident: dotted_ident.unwrap(),
                 }
             }
             unknown => panic!("Unexpected rule '{:?}' found ", unknown),

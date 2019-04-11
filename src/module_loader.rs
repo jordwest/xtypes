@@ -1,4 +1,4 @@
-use crate::ast::{Message, ModuleImport, XtFile};
+use crate::ast::{Message, ModuleUse, XtFile};
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
@@ -6,7 +6,7 @@ struct ScopeItem<'a> {
     symbol: &'a Message,
     containing_module: &'a XtFile,
     fully_qualified_name: String,
-    use_statement: &'a ModuleImport,
+    use_statement: &'a ModuleUse,
 }
 
 /// Keeps track of symbols in scope
