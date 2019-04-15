@@ -200,29 +200,6 @@ impl From<Pair<'_, Rule>> for ModuleInfo {
     }
 }
 
-impl From<Pair<'_, Rule>> for ModuleImport {
-    fn from(pair: Pair<'_, Rule>) -> ModuleImport {
-        match pair.as_rule() {
-            Rule::import => {
-                let mut path = "";
-                let mut attrs = vec![];
-                for pair in pair.into_inner() {
-                    match pair.as_rule() {
-                        Rule::string_value => path = pair.as_str(),
-                        Rule::attribute => attrs.push(pair.into()),
-                        _ => panic!("Unexpected rule"),
-                    }
-                }
-                ModuleImport {
-                    path: path.into(),
-                    attrs,
-                }
-            }
-            unknown => panic!("Unexpected rule '{:?}' found ", unknown),
-        }
-    }
-}
-
 impl From<Pair<'_, Rule>> for DottedIdent {
     fn from(pair: Pair<'_, Rule>) -> DottedIdent {
         match pair.as_rule() {
@@ -244,22 +221,38 @@ impl From<Pair<'_, Rule>> for DottedIdent {
     }
 }
 
+impl From<Pair<'_, Rule>> for IdentOrWildcard {
+    fn from(pair: Pair<'_, Rule>) -> IdentOrWildcard {
+        match pair.as_rule() {
+            Rule::ident => IdentOrWildcard::Ident(pair.as_str().to_owned()),
+            Rule::wildcard => IdentOrWildcard::Wildcard,
+            r => panic!("Unexpected rule {:?}", r),
+        }
+    }
+}
+
 impl From<Pair<'_, Rule>> for ModuleUse {
     fn from(pair: Pair<'_, Rule>) -> ModuleUse {
         match pair.as_rule() {
             Rule::use_statement => {
-                let mut dotted_ident = None;
+                let mut ident = None;
+                let mut filename = None;
                 let mut attrs = vec![];
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
-                        Rule::dotted_ident => dotted_ident = Some(pair.into()),
+                        Rule::ident => {
+                            ident = Some(IdentOrWildcard::Ident(pair.as_str().to_owned()))
+                        }
+                        Rule::wildcard => ident = Some(IdentOrWildcard::Wildcard),
+                        Rule::filename => filename = Some(pair.as_str()),
                         Rule::attribute => attrs.push(pair.into()),
-                        _ => panic!("Unexpected rule"),
+                        r => panic!("Unexpected rule {:?}", r),
                     }
                 }
                 ModuleUse {
                     attrs,
-                    dotted_ident: dotted_ident.unwrap(),
+                    ident: ident.unwrap(),
+                    filename: filename.unwrap().to_owned(),
                 }
             }
             unknown => panic!("Unexpected rule '{:?}' found ", unknown),
@@ -272,14 +265,12 @@ impl From<Pair<'_, Rule>> for XtFile {
         match pair.as_rule() {
             Rule::file => {
                 let mut messages = vec![];
-                let mut imports = vec![];
                 let mut use_imports = vec![];
                 let mut module_info = None;
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::module_decl => module_info = Some(pair.into()),
                         Rule::message => messages.push(pair.into()),
-                        Rule::import => imports.push(pair.into()),
                         Rule::use_statement => use_imports.push(pair.into()),
                         Rule::typedef => println!("Unhandled typedef"),
                         Rule::EOI => (),
@@ -288,7 +279,6 @@ impl From<Pair<'_, Rule>> for XtFile {
                 }
                 XtFile {
                     module_info: module_info.unwrap(),
-                    imports: imports,
                     messages: messages,
                     use_imports,
                 }

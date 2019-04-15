@@ -113,15 +113,16 @@ pub struct DottedIdent {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct ModuleUse {
-    pub attrs: Vec<Attribute>,
-    pub dotted_ident: DottedIdent,
+pub enum IdentOrWildcard {
+    Ident(String),
+    Wildcard,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct ModuleImport {
-    pub path: String,
+pub struct ModuleUse {
     pub attrs: Vec<Attribute>,
+    pub filename: String,
+    pub ident: IdentOrWildcard,
 }
 
 #[derive(Debug, PartialEq)]
@@ -133,7 +134,6 @@ pub enum TypeName {
 #[derive(Debug, PartialEq)]
 pub struct XtFile {
     pub module_info: ModuleInfo,
-    pub imports: Vec<ModuleImport>,
     pub use_imports: Vec<ModuleUse>,
     pub messages: Vec<Message>,
 }

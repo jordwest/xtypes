@@ -29,10 +29,9 @@ message = { attribute* ~ message_keyword ~ ident ~ "=" ~ (enum_message | struct_
 
 module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 
-import = { attribute* ~ "import" ~ "\"" ~ string_value ~ "\"" ~ ";"}
-
-use_statement = { attribute* ~ "use" ~ WHITESPACE* ~ dotted_ident ~ ";" }
+filename = { (alpha | digit | underscore | "-" | "." | "/" | "\\")* }
+use_statement = { attribute* ~ "use" ~ "\"" ~ filename ~ "\"" ~ "as" ~ (ident | wildcard) ~ ";" }
 
 typedef = { attribute* ~ "type" ~ type_name ~ ";" }
 
-file = { WHITESPACE* ~ module_decl ~ import* ~ use_statement* ~ (message | typedef)* ~ EOI }
+file = { WHITESPACE* ~ module_decl ~ use_statement* ~ (message | typedef)* ~ EOI }

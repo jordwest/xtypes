@@ -1,9 +1,7 @@
 #[output="/sample/test/somefile.txt"]
 module Sample.Test;
 
-import "./prelude.xt";
-
-use Prelude.*;
+use "prelude.xt" as *;
 
 #[doc = "This message could be one of three shapes"]
 message EnumSample =
