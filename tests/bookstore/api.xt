@@ -1,5 +1,5 @@
-use XTypes.Prelude.*;
-use Bookstore.Data.*;
+use "prelude.xt" as *;
+use "data.xt" as *;
 
 message FindBooksRequest = {
     /// Optional query 
