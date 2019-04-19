@@ -1,5 +1,5 @@
 module Bookstore.Data;
-use XTypes.Prelude.*;
+use "prelude.xt" as *;
 
 message Book = {
     id: string,
