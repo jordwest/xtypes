@@ -21,7 +21,7 @@
 ///   author: string,
 /// }
 /// ```
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Attribute {
     pub name: String,
     pub value: String,
@@ -43,54 +43,60 @@ pub struct Attribute {
 ///     | Two(float32, float32)
 /// ;
 /// ```
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Tuple(pub Vec<String>);
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumMessage {
     pub variants: Vec<EnumVariant>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct EnumVariant {
     pub name: String,
     pub attrs: Vec<Attribute>,
     pub content: Option<Tuple>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct StructField {
     pub name: String,
     pub type_name: TypeName,
     pub is_optional: bool,
     pub attrs: Vec<Attribute>,
 }
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct StructMessage {
     pub fields: Vec<StructField>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum MessageType {
     Enum(EnumMessage),
     Struct(StructMessage),
 }
 
-#[derive(Debug, PartialEq)]
-pub struct Message {
-    pub name: String,
-    pub attrs: Vec<Attribute>,
-    pub value: MessageType,
+#[derive(Clone, Debug, PartialEq)]
+pub enum SymbolType {
+    Message(MessageType),
+    Primitive,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
+pub struct SymbolDefinition {
+    pub name: TypeName,
+    pub attrs: Vec<Attribute>,
+    pub value: SymbolType,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModuleInfo {
     pub name: String,
     pub attrs: Vec<Attribute>,
 }
 
 /// A portion of a [DottedIdent](xtypes::ast::DottedIdent).
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum DottedIdentPart {
     Ident(String),
     Wildcard,
@@ -107,33 +113,54 @@ pub enum DottedIdentPart {
 ///   - Ident("SomeModule")
 ///   - Ident("SubModule")
 ///   - Wildcard
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct DottedIdent {
     pub parts: Vec<DottedIdentPart>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum IdentOrWildcard {
     Ident(String),
     Wildcard,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModuleUse {
     pub attrs: Vec<Attribute>,
     pub filename: String,
     pub ident: IdentOrWildcard,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TypeName {
     Concrete(String),
     Generic(String, Box<TypeName>),
 }
+impl Into<String> for &TypeName {
+    fn into(self) -> String {
+        match &self {
+            TypeName::Concrete(s) => s.clone(),
+            TypeName::Generic(s, _) => s.clone(),
+        }
+    }
+}
+impl Into<String> for TypeName {
+    fn into(self) -> String {
+        (&self).into()
+    }
+}
+impl TypeName {
+    pub fn identifier(&self) -> String {
+        match self {
+            TypeName::Concrete(s) => s.clone(),
+            TypeName::Generic(s, _) => s.clone(),
+        }
+    }
+}
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct XtFile {
     pub module_info: ModuleInfo,
     pub use_imports: Vec<ModuleUse>,
-    pub messages: Vec<Message>,
+    pub symbols: Vec<SymbolDefinition>,
 }

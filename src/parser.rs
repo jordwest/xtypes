@@ -138,12 +138,12 @@ impl From<Pair<'_, Rule>> for MessageType {
         match pair.as_rule() {
             Rule::enum_message => MessageType::Enum(pair.into()),
             Rule::struct_message => MessageType::Struct(pair.into()),
-            _ => panic!("Unexpected message type"),
+            r => panic!("Unexpected message type {:?}", r),
         }
     }
 }
 
-impl Message {
+impl SymbolDefinition {
     pub fn attr(&self, key: &str) -> Option<String> {
         for attr in &self.attrs {
             if attr.name == key {
@@ -153,26 +153,30 @@ impl Message {
         return None;
     }
 }
-impl From<Pair<'_, Rule>> for Message {
-    fn from(pair: Pair<'_, Rule>) -> Message {
-        match pair.as_rule() {
-            Rule::message => {
-                let mut name: Option<&str> = None;
-                let mut value: Option<MessageType> = None;
-                let mut attrs = vec![];
-                for pair in pair.into_inner() {
-                    match pair.as_rule() {
-                        Rule::ident => name = Some(pair.as_str()),
-                        Rule::attribute => attrs.push(pair.into()),
-                        _ => value = Some(pair.into()),
-                    }
-                }
-                Message {
-                    name: name.unwrap().into(),
-                    attrs,
-                    value: value.unwrap(),
-                }
+impl From<Pair<'_, Rule>> for SymbolDefinition {
+    fn from(pair: Pair<'_, Rule>) -> SymbolDefinition {
+        let mut name: Option<TypeName> = None;
+        let mut value: Option<MessageType> = None;
+        let mut attrs = vec![];
+        let rule = pair.as_rule();
+        for pair in pair.into_inner() {
+            match pair.as_rule() {
+                Rule::type_name => name = Some(pair.into()),
+                Rule::attribute => attrs.push(pair.into()),
+                _ => value = Some(pair.into()),
             }
+        }
+        match rule {
+            Rule::typedef => SymbolDefinition {
+                name: name.unwrap().into(),
+                attrs,
+                value: SymbolType::Primitive,
+            },
+            Rule::message => SymbolDefinition {
+                name: name.unwrap().into(),
+                attrs,
+                value: SymbolType::Message(value.unwrap()),
+            },
             unknown => panic!("Unexpected rule '{:?}' found ", unknown),
         }
     }
@@ -264,22 +268,22 @@ impl From<Pair<'_, Rule>> for XtFile {
     fn from(pair: Pair<'_, Rule>) -> XtFile {
         match pair.as_rule() {
             Rule::file => {
-                let mut messages = vec![];
+                let mut symbols = vec![];
                 let mut use_imports = vec![];
                 let mut module_info = None;
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::module_decl => module_info = Some(pair.into()),
-                        Rule::message => messages.push(pair.into()),
+                        Rule::message => symbols.push(pair.into()),
                         Rule::use_statement => use_imports.push(pair.into()),
-                        Rule::typedef => println!("Unhandled typedef"),
+                        Rule::typedef => symbols.push(pair.into()),
                         Rule::EOI => (),
                         _ => panic!("Unexpected '{:?}'", pair),
                     }
                 }
                 XtFile {
                     module_info: module_info.unwrap(),
-                    messages: messages,
+                    symbols,
                     use_imports,
                 }
             }
