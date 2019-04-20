@@ -4,6 +4,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+#[derive(Debug)]
 struct ScopeItem<'a> {
     symbol: &'a Message,
     containing_module: &'a XtFile,
@@ -12,17 +13,48 @@ struct ScopeItem<'a> {
 }
 
 /// Keeps track of symbols in scope
+#[derive(Debug)]
 struct ModuleScope<'a> {
     symbol_map: BTreeMap<String, ScopeItem<'a>>,
     module: XtFile,
     modules: Vec<XtFile>,
 }
 
-// TODO next
-// impl ModuleScope {
-//     fn load_module_and_imports(loader: impl ModuleLoader, module: String) -> ModuleScope {
-//     }
-// }
+impl<'a> ModuleScope<'a> {
+    fn load_module_and_imports<T: AsRef<str> + Sized>(
+        loader: impl ModuleLoader,
+        module_location: T,
+    ) -> ModuleScope<'a> {
+        let module = loader.load_module(module_location);
+
+        // for import in module.use_imports {
+        //     let imported_module = loader.load_module(import.filename);
+        //     assert_eq!(imported_module.module_info.name, "XTypes.Prelude");
+        // }
+
+        let imported_modules = (&module.use_imports)
+            .iter()
+            .map(|m| loader.load_module(&m.filename))
+            .collect();
+
+        ModuleScope {
+            symbol_map: BTreeMap::new(),
+            module,
+            modules: imported_modules,
+        }
+    }
+}
+
+#[test]
+fn test_load_module_and_imports() {
+    use insta::assert_debug_snapshot_matches;
+    let src_dir = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/src"));
+    let mut file_loader = FileModuleLoader::new();
+    file_loader.search_paths.push(src_dir);
+
+    let scope = ModuleScope::load_module_and_imports(file_loader, "sample.xt");
+    assert_debug_snapshot_matches!("ModuleScope::load_module_and_imports", scope);
+}
 
 trait ModuleLoader {
     fn load_module<T: AsRef<str> + Sized>(&self, name: T) -> XtFile;
