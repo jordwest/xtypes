@@ -1,8 +1,8 @@
 ---
-created: "2019-04-20T08:31:01.980Z"
+created: "2019-04-20T08:31:01.980037Z"
 creator: insta@0.6.2
-source: src/parser.rs
-expression: file
+source: src/module_loader.rs
+expression: module
 ---
 XtFile {
     module_info: ModuleInfo {

@@ -1,0 +1,8 @@
+#[output="/sample/test/somefile.txt"]
+module Sample.Test2;
+
+use "prelude.xt" as *;
+
+message StructSample<T> = {
+    has_many: Array<T>,
+};
