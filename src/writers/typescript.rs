@@ -42,7 +42,7 @@ mod gen {
         }
     }
 
-    pub fn docblock(msg: &Message) -> Block {
+    pub fn docblock(msg: &SymbolDefinition) -> Block {
         match msg.attr("doc") {
             None => Block::empty(),
             Some(v) => Template::docblock(v),
@@ -51,16 +51,17 @@ mod gen {
 }
 
 pub fn write_defs(file: XtFile) -> String {
-    let output = Template::main(Block::join_map(file.messages, |m, _| {
+    let output = Template::main(Block::join_map(file.symbols, |m, _| {
         Template::namespace(
             gen::docblock(&m),
             m.name,
             match m.value {
-                MessageType::Enum(v) => Template::decl_tagged_union(
+                SymbolType::Primitive => Block::empty(),
+                SymbolType::Message(MessageType::Enum(v)) => Template::decl_tagged_union(
                     "T",
                     Block::join_map(v.variants, |v, _| gen::variant(v)),
                 ),
-                MessageType::Struct(s) => Template::decl_struct(
+                SymbolType::Message(MessageType::Struct(s)) => Template::decl_struct(
                     "T",
                     Block::join_map(s.fields, |f, _| gen::struct_field(f)),
                 ),

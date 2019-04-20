@@ -25,7 +25,7 @@ struct_field = { attribute* ~ field_name ~ (optional)? ~ ":" ~ type_name ~ "," }
 struct_message = { "{" ~ struct_field* ~ "}" }
 
 message_keyword = _{ "message" }
-message = { attribute* ~ message_keyword ~ ident ~ "=" ~ (enum_message | struct_message) ~ ";"}
+message = { attribute* ~ message_keyword ~ type_name ~ "=" ~ (enum_message | struct_message) ~ ";"}
 
 module_decl = { attribute* ~ "module" ~ dotted_ident ~ ";" }
 

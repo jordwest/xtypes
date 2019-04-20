@@ -1,47 +1,59 @@
-use crate::ast::{Message, ModuleUse, XtFile};
+use crate::ast::{SymbolDefinition, XtFile};
 use crate::parser;
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
-struct ScopeItem<'a> {
-    symbol: &'a Message,
-    containing_module: &'a XtFile,
+struct ScopeItem {
+    symbol: SymbolDefinition,
+    // containing_module: &'a XtFile,
     fully_qualified_name: String,
-    use_statement: &'a ModuleUse,
+    // use_statement: &'a ModuleUse,
 }
 
 /// Keeps track of symbols in scope
 #[derive(Debug)]
-struct ModuleScope<'a> {
-    symbol_map: BTreeMap<String, ScopeItem<'a>>,
+struct ModuleScope {
+    symbol_map: BTreeMap<String, ScopeItem>,
     module: XtFile,
     modules: Vec<XtFile>,
 }
 
-impl<'a> ModuleScope<'a> {
-    fn load_module_and_imports<T: AsRef<str> + Sized>(
+impl ModuleScope {
+    fn add_symbols_from_import(&mut self, module: &XtFile) {
+        for symbol in &module.symbols {
+            self.symbol_map.insert(
+                symbol.name.identifier(),
+                ScopeItem {
+                    symbol: symbol.clone(),
+                    fully_qualified_name: symbol.name.identifier(),
+                },
+            );
+        }
+    }
+
+    pub fn load_module_and_imports<T: AsRef<str> + Sized>(
         loader: impl ModuleLoader,
         module_location: T,
-    ) -> ModuleScope<'a> {
+    ) -> ModuleScope {
         let module = loader.load_module(module_location);
 
-        // for import in module.use_imports {
-        //     let imported_module = loader.load_module(import.filename);
-        //     assert_eq!(imported_module.module_info.name, "XTypes.Prelude");
-        // }
-
-        let imported_modules = (&module.use_imports)
-            .iter()
-            .map(|m| loader.load_module(&m.filename))
-            .collect();
-
-        ModuleScope {
+        let mut instance = ModuleScope {
             symbol_map: BTreeMap::new(),
-            module,
-            modules: imported_modules,
+            module: module.clone(),
+            modules: Vec::with_capacity(module.use_imports.len()),
+        };
+
+        instance.add_symbols_from_import(&module);
+
+        for use_statement in &module.use_imports {
+            let module = loader.load_module(&use_statement.filename);
+            instance.add_symbols_from_import(&module);
+            instance.modules.push(module);
         }
+
+        instance
     }
 }
 

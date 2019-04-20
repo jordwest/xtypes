@@ -1,11 +1,230 @@
 ---
-created: "2019-04-20T07:01:21.949911Z"
+created: "2019-04-20T08:00:49.892928Z"
 creator: insta@0.6.2
 source: src/module_loader.rs
 expression: scope
 ---
 ModuleScope {
-    symbol_map: {},
+    symbol_map: {
+        "Array": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Generic(
+                    "Array",
+                    Concrete(
+                        "T"
+                    )
+                ),
+                attrs: [],
+                value: Primitive
+            },
+            fully_qualified_name: "Array"
+        },
+        "EnumSample": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "EnumSample"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "doc",
+                        value: "This message could be one of three shapes"
+                    }
+                ],
+                value: Message(
+                    Enum(
+                        EnumMessage {
+                            variants: [
+                                EnumVariant {
+                                    name: "One",
+                                    attrs: [
+                                        Attribute {
+                                            name: "thing.stuff",
+                                            value: "xyz"
+                                        },
+                                        Attribute {
+                                            name: "json.tag",
+                                            value: "A"
+                                        }
+                                    ],
+                                    content: None
+                                },
+                                EnumVariant {
+                                    name: "Two",
+                                    attrs: [
+                                        Attribute {
+                                            name: "blah",
+                                            value: "X"
+                                        }
+                                    ],
+                                    content: Some(
+                                        Tuple(
+                                            [
+                                                "StructSample",
+                                                "Boolean"
+                                            ]
+                                        )
+                                    )
+                                },
+                                EnumVariant {
+                                    name: "Three",
+                                    attrs: [],
+                                    content: None
+                                }
+                            ]
+                        }
+                    )
+                )
+            },
+            fully_qualified_name: "EnumSample"
+        },
+        "Option": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Generic(
+                    "Option",
+                    Concrete(
+                        "T"
+                    )
+                ),
+                attrs: [],
+                value: Primitive
+            },
+            fully_qualified_name: "Option"
+        },
+        "StructSample": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "StructSample"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "doc",
+                        value: "Example of a struct/record type"
+                    },
+                    Attribute {
+                        name: "http.method",
+                        value: "GET"
+                    }
+                ],
+                value: Message(
+                    Struct(
+                        StructMessage {
+                            fields: [
+                                StructField {
+                                    name: "repeated_field",
+                                    type_name: Generic(
+                                        "Thing",
+                                        Generic(
+                                            "Array",
+                                            Concrete(
+                                                "string"
+                                            )
+                                        )
+                                    ),
+                                    is_optional: false,
+                                    attrs: [
+                                        Attribute {
+                                            name: "json.key",
+                                            value: "X"
+                                        }
+                                    ]
+                                },
+                                StructField {
+                                    name: "optional_field",
+                                    type_name: Concrete(
+                                        "type"
+                                    ),
+                                    is_optional: true,
+                                    attrs: [
+                                        Attribute {
+                                            name: "json.key",
+                                            value: "Y"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    )
+                )
+            },
+            fully_qualified_name: "StructSample"
+        },
+        "boolean": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "boolean"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "js.type",
+                        value: "boolean"
+                    },
+                    Attribute {
+                        name: "rust.type",
+                        value: "bool"
+                    }
+                ],
+                value: Primitive
+            },
+            fully_qualified_name: "boolean"
+        },
+        "float32": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "float32"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "js.type",
+                        value: "number"
+                    },
+                    Attribute {
+                        name: "rust.type",
+                        value: "f32"
+                    }
+                ],
+                value: Primitive
+            },
+            fully_qualified_name: "float32"
+        },
+        "int32": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "int32"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "js.type",
+                        value: "number"
+                    },
+                    Attribute {
+                        name: "rust.type",
+                        value: "i32"
+                    }
+                ],
+                value: Primitive
+            },
+            fully_qualified_name: "int32"
+        },
+        "string": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Concrete(
+                    "string"
+                ),
+                attrs: [
+                    Attribute {
+                        name: "js.type",
+                        value: "string"
+                    },
+                    Attribute {
+                        name: "rust.type",
+                        value: "String"
+                    }
+                ],
+                value: Primitive
+            },
+            fully_qualified_name: "string"
+        }
+    },
     module: XtFile {
         module_info: ModuleInfo {
             name: "Sample.Test",
@@ -23,60 +242,66 @@ ModuleScope {
                 ident: Wildcard
             }
         ],
-        messages: [
-            Message {
-                name: "EnumSample",
+        symbols: [
+            SymbolDefinition {
+                name: Concrete(
+                    "EnumSample"
+                ),
                 attrs: [
                     Attribute {
                         name: "doc",
                         value: "This message could be one of three shapes"
                     }
                 ],
-                value: Enum(
-                    EnumMessage {
-                        variants: [
-                            EnumVariant {
-                                name: "One",
-                                attrs: [
-                                    Attribute {
-                                        name: "thing.stuff",
-                                        value: "xyz"
-                                    },
-                                    Attribute {
-                                        name: "json.tag",
-                                        value: "A"
-                                    }
-                                ],
-                                content: None
-                            },
-                            EnumVariant {
-                                name: "Two",
-                                attrs: [
-                                    Attribute {
-                                        name: "blah",
-                                        value: "X"
-                                    }
-                                ],
-                                content: Some(
-                                    Tuple(
-                                        [
-                                            "StructSample",
-                                            "Boolean"
-                                        ]
+                value: Message(
+                    Enum(
+                        EnumMessage {
+                            variants: [
+                                EnumVariant {
+                                    name: "One",
+                                    attrs: [
+                                        Attribute {
+                                            name: "thing.stuff",
+                                            value: "xyz"
+                                        },
+                                        Attribute {
+                                            name: "json.tag",
+                                            value: "A"
+                                        }
+                                    ],
+                                    content: None
+                                },
+                                EnumVariant {
+                                    name: "Two",
+                                    attrs: [
+                                        Attribute {
+                                            name: "blah",
+                                            value: "X"
+                                        }
+                                    ],
+                                    content: Some(
+                                        Tuple(
+                                            [
+                                                "StructSample",
+                                                "Boolean"
+                                            ]
+                                        )
                                     )
-                                )
-                            },
-                            EnumVariant {
-                                name: "Three",
-                                attrs: [],
-                                content: None
-                            }
-                        ]
-                    }
+                                },
+                                EnumVariant {
+                                    name: "Three",
+                                    attrs: [],
+                                    content: None
+                                }
+                            ]
+                        }
+                    )
                 )
             },
-            Message {
-                name: "StructSample",
+            SymbolDefinition {
+                name: Concrete(
+                    "StructSample"
+                ),
                 attrs: [
                     Attribute {
                         name: "doc",
@@ -87,43 +312,45 @@ ModuleScope {
                         value: "GET"
                     }
                 ],
-                value: Struct(
-                    StructMessage {
-                        fields: [
-                            StructField {
-                                name: "repeated_field",
-                                type_name: Generic(
-                                    "Thing",
-                                    Generic(
-                                        "Array",
-                                        Concrete(
-                                            "string"
+                value: Message(
+                    Struct(
+                        StructMessage {
+                            fields: [
+                                StructField {
+                                    name: "repeated_field",
+                                    type_name: Generic(
+                                        "Thing",
+                                        Generic(
+                                            "Array",
+                                            Concrete(
+                                                "string"
+                                            )
                                         )
-                                    )
-                                ),
-                                is_optional: false,
-                                attrs: [
-                                    Attribute {
-                                        name: "json.key",
-                                        value: "X"
-                                    }
-                                ]
-                            },
-                            StructField {
-                                name: "optional_field",
-                                type_name: Concrete(
-                                    "type"
-                                ),
-                                is_optional: true,
-                                attrs: [
-                                    Attribute {
-                                        name: "json.key",
-                                        value: "Y"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+                                    ),
+                                    is_optional: false,
+                                    attrs: [
+                                        Attribute {
+                                            name: "json.key",
+                                            value: "X"
+                                        }
+                                    ]
+                                },
+                                StructField {
+                                    name: "optional_field",
+                                    type_name: Concrete(
+                                        "type"
+                                    ),
+                                    is_optional: true,
+                                    attrs: [
+                                        Attribute {
+                                            name: "json.key",
+                                            value: "Y"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    )
                 )
             }
         ]
@@ -135,7 +362,92 @@ ModuleScope {
                 attrs: []
             },
             use_imports: [],
-            messages: []
+            symbols: [
+                SymbolDefinition {
+                    name: Concrete(
+                        "boolean"
+                    ),
+                    attrs: [
+                        Attribute {
+                            name: "js.type",
+                            value: "boolean"
+                        },
+                        Attribute {
+                            name: "rust.type",
+                            value: "bool"
+                        }
+                    ],
+                    value: Primitive
+                },
+                SymbolDefinition {
+                    name: Concrete(
+                        "string"
+                    ),
+                    attrs: [
+                        Attribute {
+                            name: "js.type",
+                            value: "string"
+                        },
+                        Attribute {
+                            name: "rust.type",
+                            value: "String"
+                        }
+                    ],
+                    value: Primitive
+                },
+                SymbolDefinition {
+                    name: Concrete(
+                        "float32"
+                    ),
+                    attrs: [
+                        Attribute {
+                            name: "js.type",
+                            value: "number"
+                        },
+                        Attribute {
+                            name: "rust.type",
+                            value: "f32"
+                        }
+                    ],
+                    value: Primitive
+                },
+                SymbolDefinition {
+                    name: Concrete(
+                        "int32"
+                    ),
+                    attrs: [
+                        Attribute {
+                            name: "js.type",
+                            value: "number"
+                        },
+                        Attribute {
+                            name: "rust.type",
+                            value: "i32"
+                        }
+                    ],
+                    value: Primitive
+                },
+                SymbolDefinition {
+                    name: Generic(
+                        "Option",
+                        Concrete(
+                            "T"
+                        )
+                    ),
+                    attrs: [],
+                    value: Primitive
+                },
+                SymbolDefinition {
+                    name: Generic(
+                        "Array",
+                        Concrete(
+                            "T"
+                        )
+                    ),
+                    attrs: [],
+                    value: Primitive
+                }
+            ]
         }
     ]
 }

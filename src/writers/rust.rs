@@ -1,4 +1,4 @@
-use crate::ast::{MessageType, XtFile};
+use crate::ast::{MessageType, SymbolType, XtFile};
 use jens::Block;
 
 use jens_derive::Template;
@@ -9,7 +9,7 @@ struct Template {}
 
 mod gen {
     use super::Template;
-    use crate::ast::{EnumVariant, Message, StructField, Tuple, TypeName};
+    use crate::ast::{EnumVariant, StructField, SymbolDefinition, Tuple, TypeName};
     use jens::Block;
 
     pub fn tuple_types(v: &Tuple) -> Block {
@@ -41,7 +41,7 @@ mod gen {
         })
     }
 
-    pub fn docblock(msg: &Message) -> Block {
+    pub fn docblock(msg: &SymbolDefinition) -> Block {
         match msg.attr("doc") {
             None => Block::empty(),
             Some(v) => Template::docblock(v),
@@ -50,13 +50,14 @@ mod gen {
 }
 
 pub fn write_defs(file: XtFile) -> String {
-    let output = Template::main(Block::join_map(file.messages, |m, _| match &m.value {
-        MessageType::Enum(v) => Template::decl_tagged_union(
+    let output = Template::main(Block::join_map(file.symbols, |m, _| match &m.value {
+        SymbolType::Primitive => Block::empty(),
+        SymbolType::Message(MessageType::Enum(v)) => Template::decl_tagged_union(
             gen::docblock(&m),
             Block::from(m.name),
             Block::join_map(&v.variants, |v, _| gen::variant(v)),
         ),
-        MessageType::Struct(s) => Template::decl_struct(
+        SymbolType::Message(MessageType::Struct(s)) => Template::decl_struct(
             gen::docblock(&m),
             Block::from(m.name),
             Block::join_map(&s.fields, |f, _| gen::struct_field(f)),

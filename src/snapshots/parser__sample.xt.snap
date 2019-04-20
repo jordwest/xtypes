@@ -1,5 +1,5 @@
 ---
-created: "2019-04-15T22:04:16.122762Z"
+created: "2019-04-20T08:00:49.892671Z"
 creator: insta@0.6.2
 source: src/parser.rs
 expression: file
@@ -21,60 +21,66 @@ XtFile {
             ident: Wildcard
         }
     ],
-    messages: [
-        Message {
-            name: "EnumSample",
+    symbols: [
+        SymbolDefinition {
+            name: Concrete(
+                "EnumSample"
+            ),
             attrs: [
                 Attribute {
                     name: "doc",
                     value: "This message could be one of three shapes"
                 }
             ],
-            value: Enum(
-                EnumMessage {
-                    variants: [
-                        EnumVariant {
-                            name: "One",
-                            attrs: [
-                                Attribute {
-                                    name: "thing.stuff",
-                                    value: "xyz"
-                                },
-                                Attribute {
-                                    name: "json.tag",
-                                    value: "A"
-                                }
-                            ],
-                            content: None
-                        },
-                        EnumVariant {
-                            name: "Two",
-                            attrs: [
-                                Attribute {
-                                    name: "blah",
-                                    value: "X"
-                                }
-                            ],
-                            content: Some(
-                                Tuple(
-                                    [
-                                        "StructSample",
-                                        "Boolean"
-                                    ]
+            value: Message(
+                Enum(
+                    EnumMessage {
+                        variants: [
+                            EnumVariant {
+                                name: "One",
+                                attrs: [
+                                    Attribute {
+                                        name: "thing.stuff",
+                                        value: "xyz"
+                                    },
+                                    Attribute {
+                                        name: "json.tag",
+                                        value: "A"
+                                    }
+                                ],
+                                content: None
+                            },
+                            EnumVariant {
+                                name: "Two",
+                                attrs: [
+                                    Attribute {
+                                        name: "blah",
+                                        value: "X"
+                                    }
+                                ],
+                                content: Some(
+                                    Tuple(
+                                        [
+                                            "StructSample",
+                                            "Boolean"
+                                        ]
+                                    )
                                 )
-                            )
-                        },
-                        EnumVariant {
-                            name: "Three",
-                            attrs: [],
-                            content: None
-                        }
-                    ]
-                }
+                            },
+                            EnumVariant {
+                                name: "Three",
+                                attrs: [],
+                                content: None
+                            }
+                        ]
+                    }
+                )
             )
         },
-        Message {
-            name: "StructSample",
+        SymbolDefinition {
+            name: Concrete(
+                "StructSample"
+            ),
             attrs: [
                 Attribute {
                     name: "doc",
@@ -85,43 +91,45 @@ XtFile {
                     value: "GET"
                 }
             ],
-            value: Struct(
-                StructMessage {
-                    fields: [
-                        StructField {
-                            name: "repeated_field",
-                            type_name: Generic(
-                                "Thing",
-                                Generic(
-                                    "Array",
-                                    Concrete(
-                                        "string"
+            value: Message(
+                Struct(
+                    StructMessage {
+                        fields: [
+                            StructField {
+                                name: "repeated_field",
+                                type_name: Generic(
+                                    "Thing",
+                                    Generic(
+                                        "Array",
+                                        Concrete(
+                                            "string"
+                                        )
                                     )
-                                )
-                            ),
-                            is_optional: false,
-                            attrs: [
-                                Attribute {
-                                    name: "json.key",
-                                    value: "X"
-                                }
-                            ]
-                        },
-                        StructField {
-                            name: "optional_field",
-                            type_name: Concrete(
-                                "type"
-                            ),
-                            is_optional: true,
-                            attrs: [
-                                Attribute {
-                                    name: "json.key",
-                                    value: "Y"
-                                }
-                            ]
-                        }
-                    ]
-                }
+                                ),
+                                is_optional: false,
+                                attrs: [
+                                    Attribute {
+                                        name: "json.key",
+                                        value: "X"
+                                    }
+                                ]
+                            },
+                            StructField {
+                                name: "optional_field",
+                                type_name: Concrete(
+                                    "type"
+                                ),
+                                is_optional: true,
+                                attrs: [
+                                    Attribute {
+                                        name: "json.key",
+                                        value: "Y"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                )
             )
         }
     ]
