@@ -2,6 +2,8 @@
 module Sample.Test;
 
 use "prelude.xt" as *;
+#[import_attr = "test123"]
+use "sample2.xt" as Sample2;
 
 #[doc = "This message could be one of three shapes"]
 message EnumSample =

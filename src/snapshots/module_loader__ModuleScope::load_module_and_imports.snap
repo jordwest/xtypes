@@ -1,5 +1,5 @@
 ---
-created: "2019-04-20T08:00:49.892928Z"
+created: "2019-04-20T08:31:01.980974Z"
 creator: insta@0.6.2
 source: src/module_loader.rs
 expression: scope
@@ -17,7 +17,14 @@ ModuleScope {
                 attrs: [],
                 value: Primitive
             },
-            fully_qualified_name: "Array"
+            fully_qualified_name: "Array",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
         },
         "EnumSample": ScopeItem {
             symbol: SymbolDefinition {
@@ -75,7 +82,8 @@ ModuleScope {
                     )
                 )
             },
-            fully_qualified_name: "EnumSample"
+            fully_qualified_name: "EnumSample",
+            use_statement: None
         },
         "Option": ScopeItem {
             symbol: SymbolDefinition {
@@ -88,7 +96,59 @@ ModuleScope {
                 attrs: [],
                 value: Primitive
             },
-            fully_qualified_name: "Option"
+            fully_qualified_name: "Option",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
+        },
+        "Sample2.StructSample": ScopeItem {
+            symbol: SymbolDefinition {
+                name: Generic(
+                    "StructSample",
+                    Concrete(
+                        "T"
+                    )
+                ),
+                attrs: [],
+                value: Message(
+                    Struct(
+                        StructMessage {
+                            fields: [
+                                StructField {
+                                    name: "has_many",
+                                    type_name: Generic(
+                                        "Array",
+                                        Concrete(
+                                            "T"
+                                        )
+                                    ),
+                                    is_optional: false,
+                                    attrs: []
+                                }
+                            ]
+                        }
+                    )
+                )
+            },
+            fully_qualified_name: "Sample2.StructSample",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [
+                        Attribute {
+                            name: "import_attr",
+                            value: "test123"
+                        }
+                    ],
+                    filename: "sample2.xt",
+                    ident: Ident(
+                        "Sample2"
+                    )
+                }
+            )
         },
         "StructSample": ScopeItem {
             symbol: SymbolDefinition {
@@ -146,7 +206,8 @@ ModuleScope {
                     )
                 )
             },
-            fully_qualified_name: "StructSample"
+            fully_qualified_name: "StructSample",
+            use_statement: None
         },
         "boolean": ScopeItem {
             symbol: SymbolDefinition {
@@ -165,7 +226,14 @@ ModuleScope {
                 ],
                 value: Primitive
             },
-            fully_qualified_name: "boolean"
+            fully_qualified_name: "boolean",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
         },
         "float32": ScopeItem {
             symbol: SymbolDefinition {
@@ -184,7 +252,14 @@ ModuleScope {
                 ],
                 value: Primitive
             },
-            fully_qualified_name: "float32"
+            fully_qualified_name: "float32",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
         },
         "int32": ScopeItem {
             symbol: SymbolDefinition {
@@ -203,7 +278,14 @@ ModuleScope {
                 ],
                 value: Primitive
             },
-            fully_qualified_name: "int32"
+            fully_qualified_name: "int32",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
         },
         "string": ScopeItem {
             symbol: SymbolDefinition {
@@ -222,7 +304,14 @@ ModuleScope {
                 ],
                 value: Primitive
             },
-            fully_qualified_name: "string"
+            fully_qualified_name: "string",
+            use_statement: Some(
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            )
         }
     },
     module: XtFile {
@@ -240,6 +329,18 @@ ModuleScope {
                 attrs: [],
                 filename: "prelude.xt",
                 ident: Wildcard
+            },
+            ModuleUse {
+                attrs: [
+                    Attribute {
+                        name: "import_attr",
+                        value: "test123"
+                    }
+                ],
+                filename: "sample2.xt",
+                ident: Ident(
+                    "Sample2"
+                )
             }
         ],
         symbols: [
@@ -446,6 +547,54 @@ ModuleScope {
                     ),
                     attrs: [],
                     value: Primitive
+                }
+            ]
+        },
+        XtFile {
+            module_info: ModuleInfo {
+                name: "Sample.Test2",
+                attrs: [
+                    Attribute {
+                        name: "output",
+                        value: "/sample/test/somefile.txt"
+                    }
+                ]
+            },
+            use_imports: [
+                ModuleUse {
+                    attrs: [],
+                    filename: "prelude.xt",
+                    ident: Wildcard
+                }
+            ],
+            symbols: [
+                SymbolDefinition {
+                    name: Generic(
+                        "StructSample",
+                        Concrete(
+                            "T"
+                        )
+                    ),
+                    attrs: [],
+                    value: Message(
+                        Struct(
+                            StructMessage {
+                                fields: [
+                                    StructField {
+                                        name: "has_many",
+                                        type_name: Generic(
+                                            "Array",
+                                            Concrete(
+                                                "T"
+                                            )
+                                        ),
+                                        is_optional: false,
+                                        attrs: []
+                                    }
+                                ]
+                            }
+                        )
+                    )
                 }
             ]
         }

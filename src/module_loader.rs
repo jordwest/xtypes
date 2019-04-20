@@ -1,4 +1,4 @@
-use crate::ast::{SymbolDefinition, XtFile};
+use crate::ast::{IdentOrWildcard, ModuleUse, SymbolDefinition, XtFile};
 use crate::parser;
 use std::collections::BTreeMap;
 use std::fs;
@@ -9,25 +9,40 @@ struct ScopeItem {
     symbol: SymbolDefinition,
     // containing_module: &'a XtFile,
     fully_qualified_name: String,
-    // use_statement: &'a ModuleUse,
+    use_statement: Option<ModuleUse>,
 }
 
 /// Keeps track of symbols in scope
 #[derive(Debug)]
-struct ModuleScope {
+pub struct ModuleScope {
     symbol_map: BTreeMap<String, ScopeItem>,
     module: XtFile,
     modules: Vec<XtFile>,
 }
 
 impl ModuleScope {
-    fn add_symbols_from_import(&mut self, module: &XtFile) {
+    fn add_symbols_from_module(&mut self, module: &XtFile, use_statement: Option<&ModuleUse>) {
+        // Prefix the symbol with the import name. For example `Recipe.` in the following import:
+        // ```xt
+        // use "recipe.xt" as Recipe
+        // ```
+        let prefix = match use_statement {
+            Some(ModuleUse {
+                ident: IdentOrWildcard::Ident(v),
+                ..
+            }) => format!("{}.", v),
+            _ => format!(""),
+        };
+
         for symbol in &module.symbols {
+            let fully_qualified_name = format!("{}{}", prefix, symbol.name.identifier());
+
             self.symbol_map.insert(
-                symbol.name.identifier(),
+                fully_qualified_name.clone(),
                 ScopeItem {
                     symbol: symbol.clone(),
-                    fully_qualified_name: symbol.name.identifier(),
+                    use_statement: use_statement.map(|v| v.clone()),
+                    fully_qualified_name,
                 },
             );
         }
@@ -45,11 +60,11 @@ impl ModuleScope {
             modules: Vec::with_capacity(module.use_imports.len()),
         };
 
-        instance.add_symbols_from_import(&module);
+        instance.add_symbols_from_module(&module, None);
 
         for use_statement in &module.use_imports {
             let module = loader.load_module(&use_statement.filename);
-            instance.add_symbols_from_import(&module);
+            instance.add_symbols_from_module(&module, Some(use_statement));
             instance.modules.push(module);
         }
 
@@ -68,7 +83,7 @@ fn test_load_module_and_imports() {
     assert_debug_snapshot_matches!("ModuleScope::load_module_and_imports", scope);
 }
 
-trait ModuleLoader {
+pub trait ModuleLoader {
     fn load_module<T: AsRef<str> + Sized>(&self, name: T) -> XtFile;
 }
 
@@ -103,15 +118,12 @@ impl ModuleLoader for FileModuleLoader {
 
 #[test]
 fn test_load_module() {
+    use insta::assert_debug_snapshot_matches;
+
     let src_dir = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/src"));
     let mut file_loader = FileModuleLoader::new();
     file_loader.search_paths.push(src_dir);
     let module = file_loader.load_module("sample.xt");
-    assert_eq!(module.module_info.name, "Sample.Test");
 
-    assert_eq!(module.use_imports.len(), 1);
-    for import in module.use_imports {
-        let imported_module = file_loader.load_module(import.filename);
-        assert_eq!(imported_module.module_info.name, "XTypes.Prelude");
-    }
+    assert_debug_snapshot_matches!("FileModuleLoader::load_module", module);
 }
