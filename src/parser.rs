@@ -29,7 +29,7 @@ impl From<Pair<'_, Rule>> for Tuple {
         let mut types = vec![];
         for pair in pair.into_inner() {
             match pair.as_rule() {
-                Rule::ident => types.push(pair.as_str().into()),
+                Rule::dotted_ident => types.push(pair.as_str().into()),
                 _ => panic!(),
             }
         }
@@ -77,7 +77,7 @@ impl From<Pair<'_, Rule>> for TypeName {
     fn from(pair: Pair<'_, Rule>) -> TypeName {
         let pair = pair.into_inner().next().unwrap();
         match pair.as_rule() {
-            Rule::ident => TypeName::Concrete(pair.as_str().into()),
+            Rule::dotted_ident => TypeName::Concrete(pair.as_str().into()),
             Rule::generic_type => {
                 let mut outside_type = None;
                 let mut inside_type = None;

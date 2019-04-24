@@ -1,10 +1,12 @@
 ---
-created: "2019-04-24T08:49:32.010852Z"
+created: "2019-04-24T09:13:18.538372Z"
 creator: insta@0.6.3
 source: tests/output.rs
 expression: defs
 ---
 // This file was generated automatically
+import * from "prelude.xt.ts"
+import * as Data from "bookstore/data.xt.ts"
 
 
 export namespace FindBooksRequest {
@@ -15,6 +17,6 @@ export namespace FindBooksRequest {
 
 export namespace FindBooksResponse {
   export type T = {
-      books: Book.T[]
+      books: Data.Book.T[]
   }
 }

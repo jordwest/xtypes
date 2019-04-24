@@ -1,5 +1,6 @@
 main =
   // This file was generated automatically
+  ${imports}
 
   ${messages}
 --

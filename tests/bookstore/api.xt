@@ -1,6 +1,6 @@
 module Bookstore.Api;
 use "prelude.xt" as *;
-use "bookstore/data.xt" as *;
+use "bookstore/data.xt" as Data;
 
 message FindBooksRequest = {
     /// Optional query 
@@ -8,5 +8,5 @@ message FindBooksRequest = {
 };
 
 message FindBooksResponse = {
-    books: Array<Book>,
+    books: Array<Data.Book>,
 };

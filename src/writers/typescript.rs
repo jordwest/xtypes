@@ -61,25 +61,39 @@ mod gen {
             Some(v) => Template::docblock(v),
         }
     }
+
+    pub fn import(import: &ModuleUse) -> Block {
+        match &import.ident {
+            IdentOrWildcard::Wildcard => {
+                Block::from(format!("import * from \"{}.ts\"", import.filename))
+            }
+            IdentOrWildcard::Ident(s) => {
+                Block::from(format!("import * as {} from \"{}.ts\"", s, import.filename))
+            }
+        }
+    }
 }
 
 pub fn write_defs(scope: ModuleScope) -> String {
-    let output = Template::main(Block::join_map(&scope.module.symbols, |m, _| {
-        Template::namespace(
-            gen::docblock(&m),
-            m.name.clone(),
-            match &m.value {
-                SymbolType::Primitive => Block::empty(),
-                SymbolType::Message(MessageType::Enum(ref v)) => Template::decl_tagged_union(
-                    "T",
-                    Block::join_map(&v.variants, |v, _| gen::variant(v)),
-                ),
-                SymbolType::Message(MessageType::Struct(s)) => Template::decl_struct(
-                    "T",
-                    Block::join_map(&s.fields, |f, _| gen::struct_field(&scope, f)),
-                ),
-            },
-        )
-    }));
+    let output = Template::main(
+        Block::join_map(&scope.module.use_imports, |i, _| gen::import(&i)),
+        Block::join_map(&scope.module.symbols, |m, _| {
+            Template::namespace(
+                gen::docblock(&m),
+                m.name.clone(),
+                match &m.value {
+                    SymbolType::Primitive => Block::empty(),
+                    SymbolType::Message(MessageType::Enum(ref v)) => Template::decl_tagged_union(
+                        "T",
+                        Block::join_map(&v.variants, |v, _| gen::variant(v)),
+                    ),
+                    SymbolType::Message(MessageType::Struct(s)) => Template::decl_struct(
+                        "T",
+                        Block::join_map(&s.fields, |f, _| gen::struct_field(&scope, f)),
+                    ),
+                },
+            )
+        }),
+    );
     format!("{}", output)
 }

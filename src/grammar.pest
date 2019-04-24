@@ -11,9 +11,9 @@ COMMENT = _{ "//" ~ (!"\n" ~ ANY)* ~ "\n" }
 string_value = { (!("\"") ~ ANY)* }
 
 generic_type = { ident ~ "<" ~ type_name ~ ">" }
-type_name = { (generic_type | ident) }
+type_name = { (generic_type | dotted_ident) }
 
-tuple = { "(" ~ ident ~ ("," ~ ident)* ~ ")" }
+tuple = { "(" ~ dotted_ident ~ ("," ~ dotted_ident)* ~ ")" }
 
 attribute = {"#[" ~ dotted_ident ~ "=" ~ "\"" ~ string_value ~ "\"" ~ "]"}
 variant = { attribute* ~ ident ~ tuple? }
