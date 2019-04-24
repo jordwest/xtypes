@@ -1,6 +1,6 @@
 ---
-created: "2019-04-20T08:31:01.980974Z"
-creator: insta@0.6.2
+created: "2019-04-24T08:38:34.252519Z"
+creator: insta@0.6.3
 source: src/module_loader.rs
 expression: scope
 ---
@@ -14,13 +14,17 @@ ModuleScope {
                         "T"
                     )
                 ),
-                attrs: [],
+                attrs: AttributeList(
+                    {}
+                ),
                 value: Primitive
             },
             fully_qualified_name: "Array",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -31,38 +35,44 @@ ModuleScope {
                 name: Concrete(
                     "EnumSample"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "doc",
-                        value: "This message could be one of three shapes"
+                attrs: AttributeList(
+                    {
+                        "doc": Attribute {
+                            name: "doc",
+                            value: "This message could be one of three shapes"
+                        }
                     }
-                ],
+                ),
                 value: Message(
                     Enum(
                         EnumMessage {
                             variants: [
                                 EnumVariant {
                                     name: "One",
-                                    attrs: [
-                                        Attribute {
-                                            name: "thing.stuff",
-                                            value: "xyz"
-                                        },
-                                        Attribute {
-                                            name: "json.tag",
-                                            value: "A"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.tag": Attribute {
+                                                name: "json.tag",
+                                                value: "A"
+                                            },
+                                            "thing.stuff": Attribute {
+                                                name: "thing.stuff",
+                                                value: "xyz"
+                                            }
                                         }
-                                    ],
+                                    ),
                                     content: None
                                 },
                                 EnumVariant {
                                     name: "Two",
-                                    attrs: [
-                                        Attribute {
-                                            name: "blah",
-                                            value: "X"
+                                    attrs: AttributeList(
+                                        {
+                                            "blah": Attribute {
+                                                name: "blah",
+                                                value: "X"
+                                            }
                                         }
-                                    ],
+                                    ),
                                     content: Some(
                                         Tuple(
                                             [
@@ -74,7 +84,9 @@ ModuleScope {
                                 },
                                 EnumVariant {
                                     name: "Three",
-                                    attrs: [],
+                                    attrs: AttributeList(
+                                        {}
+                                    ),
                                     content: None
                                 }
                             ]
@@ -93,13 +105,17 @@ ModuleScope {
                         "T"
                     )
                 ),
-                attrs: [],
+                attrs: AttributeList(
+                    {}
+                ),
                 value: Primitive
             },
             fully_qualified_name: "Option",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -113,7 +129,9 @@ ModuleScope {
                         "T"
                     )
                 ),
-                attrs: [],
+                attrs: AttributeList(
+                    {}
+                ),
                 value: Message(
                     Struct(
                         StructMessage {
@@ -127,7 +145,9 @@ ModuleScope {
                                         )
                                     ),
                                     is_optional: false,
-                                    attrs: []
+                                    attrs: AttributeList(
+                                        {}
+                                    )
                                 }
                             ]
                         }
@@ -137,12 +157,14 @@ ModuleScope {
             fully_qualified_name: "Sample2.StructSample",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [
-                        Attribute {
-                            name: "import_attr",
-                            value: "test123"
+                    attrs: AttributeList(
+                        {
+                            "import_attr": Attribute {
+                                name: "import_attr",
+                                value: "test123"
+                            }
                         }
-                    ],
+                    ),
                     filename: "sample2.xt",
                     ident: Ident(
                         "Sample2"
@@ -155,16 +177,18 @@ ModuleScope {
                 name: Concrete(
                     "StructSample"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "doc",
-                        value: "Example of a struct/record type"
-                    },
-                    Attribute {
-                        name: "http.method",
-                        value: "GET"
+                attrs: AttributeList(
+                    {
+                        "doc": Attribute {
+                            name: "doc",
+                            value: "Example of a struct/record type"
+                        },
+                        "http.method": Attribute {
+                            name: "http.method",
+                            value: "GET"
+                        }
                     }
-                ],
+                ),
                 value: Message(
                     Struct(
                         StructMessage {
@@ -181,12 +205,14 @@ ModuleScope {
                                         )
                                     ),
                                     is_optional: false,
-                                    attrs: [
-                                        Attribute {
-                                            name: "json.key",
-                                            value: "X"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.key": Attribute {
+                                                name: "json.key",
+                                                value: "X"
+                                            }
                                         }
-                                    ]
+                                    )
                                 },
                                 StructField {
                                     name: "optional_field",
@@ -194,12 +220,14 @@ ModuleScope {
                                         "type"
                                     ),
                                     is_optional: true,
-                                    attrs: [
-                                        Attribute {
-                                            name: "json.key",
-                                            value: "Y"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.key": Attribute {
+                                                name: "json.key",
+                                                value: "Y"
+                                            }
                                         }
-                                    ]
+                                    )
                                 }
                             ]
                         }
@@ -214,22 +242,26 @@ ModuleScope {
                 name: Concrete(
                     "boolean"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "js.type",
-                        value: "boolean"
-                    },
-                    Attribute {
-                        name: "rust.type",
-                        value: "bool"
+                attrs: AttributeList(
+                    {
+                        "js.type": Attribute {
+                            name: "js.type",
+                            value: "boolean"
+                        },
+                        "rust.type": Attribute {
+                            name: "rust.type",
+                            value: "bool"
+                        }
                     }
-                ],
+                ),
                 value: Primitive
             },
             fully_qualified_name: "boolean",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -240,22 +272,26 @@ ModuleScope {
                 name: Concrete(
                     "float32"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "js.type",
-                        value: "number"
-                    },
-                    Attribute {
-                        name: "rust.type",
-                        value: "f32"
+                attrs: AttributeList(
+                    {
+                        "js.type": Attribute {
+                            name: "js.type",
+                            value: "number"
+                        },
+                        "rust.type": Attribute {
+                            name: "rust.type",
+                            value: "f32"
+                        }
                     }
-                ],
+                ),
                 value: Primitive
             },
             fully_qualified_name: "float32",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -266,22 +302,26 @@ ModuleScope {
                 name: Concrete(
                     "int32"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "js.type",
-                        value: "number"
-                    },
-                    Attribute {
-                        name: "rust.type",
-                        value: "i32"
+                attrs: AttributeList(
+                    {
+                        "js.type": Attribute {
+                            name: "js.type",
+                            value: "number"
+                        },
+                        "rust.type": Attribute {
+                            name: "rust.type",
+                            value: "i32"
+                        }
                     }
-                ],
+                ),
                 value: Primitive
             },
             fully_qualified_name: "int32",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -292,22 +332,26 @@ ModuleScope {
                 name: Concrete(
                     "string"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "js.type",
-                        value: "string"
-                    },
-                    Attribute {
-                        name: "rust.type",
-                        value: "String"
+                attrs: AttributeList(
+                    {
+                        "js.type": Attribute {
+                            name: "js.type",
+                            value: "string"
+                        },
+                        "rust.type": Attribute {
+                            name: "rust.type",
+                            value: "String"
+                        }
                     }
-                ],
+                ),
                 value: Primitive
             },
             fully_qualified_name: "string",
             use_statement: Some(
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -317,26 +361,32 @@ ModuleScope {
     module: XtFile {
         module_info: ModuleInfo {
             name: "Sample.Test",
-            attrs: [
-                Attribute {
-                    name: "output",
-                    value: "/sample/test/somefile.txt"
+            attrs: AttributeList(
+                {
+                    "output": Attribute {
+                        name: "output",
+                        value: "/sample/test/somefile.txt"
+                    }
                 }
-            ]
+            )
         },
         use_imports: [
             ModuleUse {
-                attrs: [],
+                attrs: AttributeList(
+                    {}
+                ),
                 filename: "prelude.xt",
                 ident: Wildcard
             },
             ModuleUse {
-                attrs: [
-                    Attribute {
-                        name: "import_attr",
-                        value: "test123"
+                attrs: AttributeList(
+                    {
+                        "import_attr": Attribute {
+                            name: "import_attr",
+                            value: "test123"
+                        }
                     }
-                ],
+                ),
                 filename: "sample2.xt",
                 ident: Ident(
                     "Sample2"
@@ -348,38 +398,44 @@ ModuleScope {
                 name: Concrete(
                     "EnumSample"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "doc",
-                        value: "This message could be one of three shapes"
+                attrs: AttributeList(
+                    {
+                        "doc": Attribute {
+                            name: "doc",
+                            value: "This message could be one of three shapes"
+                        }
                     }
-                ],
+                ),
                 value: Message(
                     Enum(
                         EnumMessage {
                             variants: [
                                 EnumVariant {
                                     name: "One",
-                                    attrs: [
-                                        Attribute {
-                                            name: "thing.stuff",
-                                            value: "xyz"
-                                        },
-                                        Attribute {
-                                            name: "json.tag",
-                                            value: "A"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.tag": Attribute {
+                                                name: "json.tag",
+                                                value: "A"
+                                            },
+                                            "thing.stuff": Attribute {
+                                                name: "thing.stuff",
+                                                value: "xyz"
+                                            }
                                         }
-                                    ],
+                                    ),
                                     content: None
                                 },
                                 EnumVariant {
                                     name: "Two",
-                                    attrs: [
-                                        Attribute {
-                                            name: "blah",
-                                            value: "X"
+                                    attrs: AttributeList(
+                                        {
+                                            "blah": Attribute {
+                                                name: "blah",
+                                                value: "X"
+                                            }
                                         }
-                                    ],
+                                    ),
                                     content: Some(
                                         Tuple(
                                             [
@@ -391,7 +447,9 @@ ModuleScope {
                                 },
                                 EnumVariant {
                                     name: "Three",
-                                    attrs: [],
+                                    attrs: AttributeList(
+                                        {}
+                                    ),
                                     content: None
                                 }
                             ]
@@ -403,16 +461,18 @@ ModuleScope {
                 name: Concrete(
                     "StructSample"
                 ),
-                attrs: [
-                    Attribute {
-                        name: "doc",
-                        value: "Example of a struct/record type"
-                    },
-                    Attribute {
-                        name: "http.method",
-                        value: "GET"
+                attrs: AttributeList(
+                    {
+                        "doc": Attribute {
+                            name: "doc",
+                            value: "Example of a struct/record type"
+                        },
+                        "http.method": Attribute {
+                            name: "http.method",
+                            value: "GET"
+                        }
                     }
-                ],
+                ),
                 value: Message(
                     Struct(
                         StructMessage {
@@ -429,12 +489,14 @@ ModuleScope {
                                         )
                                     ),
                                     is_optional: false,
-                                    attrs: [
-                                        Attribute {
-                                            name: "json.key",
-                                            value: "X"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.key": Attribute {
+                                                name: "json.key",
+                                                value: "X"
+                                            }
                                         }
-                                    ]
+                                    )
                                 },
                                 StructField {
                                     name: "optional_field",
@@ -442,12 +504,14 @@ ModuleScope {
                                         "type"
                                     ),
                                     is_optional: true,
-                                    attrs: [
-                                        Attribute {
-                                            name: "json.key",
-                                            value: "Y"
+                                    attrs: AttributeList(
+                                        {
+                                            "json.key": Attribute {
+                                                name: "json.key",
+                                                value: "Y"
+                                            }
                                         }
-                                    ]
+                                    )
                                 }
                             ]
                         }
@@ -460,7 +524,9 @@ ModuleScope {
         XtFile {
             module_info: ModuleInfo {
                 name: "XTypes.Prelude",
-                attrs: []
+                attrs: AttributeList(
+                    {}
+                )
             },
             use_imports: [],
             symbols: [
@@ -468,64 +534,72 @@ ModuleScope {
                     name: Concrete(
                         "boolean"
                     ),
-                    attrs: [
-                        Attribute {
-                            name: "js.type",
-                            value: "boolean"
-                        },
-                        Attribute {
-                            name: "rust.type",
-                            value: "bool"
+                    attrs: AttributeList(
+                        {
+                            "js.type": Attribute {
+                                name: "js.type",
+                                value: "boolean"
+                            },
+                            "rust.type": Attribute {
+                                name: "rust.type",
+                                value: "bool"
+                            }
                         }
-                    ],
+                    ),
                     value: Primitive
                 },
                 SymbolDefinition {
                     name: Concrete(
                         "string"
                     ),
-                    attrs: [
-                        Attribute {
-                            name: "js.type",
-                            value: "string"
-                        },
-                        Attribute {
-                            name: "rust.type",
-                            value: "String"
+                    attrs: AttributeList(
+                        {
+                            "js.type": Attribute {
+                                name: "js.type",
+                                value: "string"
+                            },
+                            "rust.type": Attribute {
+                                name: "rust.type",
+                                value: "String"
+                            }
                         }
-                    ],
+                    ),
                     value: Primitive
                 },
                 SymbolDefinition {
                     name: Concrete(
                         "float32"
                     ),
-                    attrs: [
-                        Attribute {
-                            name: "js.type",
-                            value: "number"
-                        },
-                        Attribute {
-                            name: "rust.type",
-                            value: "f32"
+                    attrs: AttributeList(
+                        {
+                            "js.type": Attribute {
+                                name: "js.type",
+                                value: "number"
+                            },
+                            "rust.type": Attribute {
+                                name: "rust.type",
+                                value: "f32"
+                            }
                         }
-                    ],
+                    ),
                     value: Primitive
                 },
                 SymbolDefinition {
                     name: Concrete(
                         "int32"
                     ),
-                    attrs: [
-                        Attribute {
-                            name: "js.type",
-                            value: "number"
-                        },
-                        Attribute {
-                            name: "rust.type",
-                            value: "i32"
+                    attrs: AttributeList(
+                        {
+                            "js.type": Attribute {
+                                name: "js.type",
+                                value: "number"
+                            },
+                            "rust.type": Attribute {
+                                name: "rust.type",
+                                value: "i32"
+                            }
                         }
-                    ],
+                    ),
                     value: Primitive
                 },
                 SymbolDefinition {
@@ -535,7 +609,9 @@ ModuleScope {
                             "T"
                         )
                     ),
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     value: Primitive
                 },
                 SymbolDefinition {
@@ -545,7 +621,9 @@ ModuleScope {
                             "T"
                         )
                     ),
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     value: Primitive
                 }
             ]
@@ -553,16 +631,20 @@ ModuleScope {
         XtFile {
             module_info: ModuleInfo {
                 name: "Sample.Test2",
-                attrs: [
-                    Attribute {
-                        name: "output",
-                        value: "/sample/test/somefile.txt"
+                attrs: AttributeList(
+                    {
+                        "output": Attribute {
+                            name: "output",
+                            value: "/sample/test/somefile.txt"
+                        }
                     }
-                ]
+                )
             },
             use_imports: [
                 ModuleUse {
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     filename: "prelude.xt",
                     ident: Wildcard
                 }
@@ -575,7 +657,9 @@ ModuleScope {
                             "T"
                         )
                     ),
-                    attrs: [],
+                    attrs: AttributeList(
+                        {}
+                    ),
                     value: Message(
                         Struct(
                             StructMessage {
@@ -589,7 +673,9 @@ ModuleScope {
                                             )
                                         ),
                                         is_optional: false,
-                                        attrs: []
+                                        attrs: AttributeList(
+                                            {}
+                                        )
                                     }
                                 ]
                             }

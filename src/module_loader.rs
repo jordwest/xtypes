@@ -5,19 +5,19 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
-struct ScopeItem {
-    symbol: SymbolDefinition,
+pub struct ScopeItem {
+    pub symbol: SymbolDefinition,
     // containing_module: &'a XtFile,
-    fully_qualified_name: String,
-    use_statement: Option<ModuleUse>,
+    pub fully_qualified_name: String,
+    pub use_statement: Option<ModuleUse>,
 }
 
 /// Keeps track of symbols in scope
 #[derive(Debug)]
 pub struct ModuleScope {
-    symbol_map: BTreeMap<String, ScopeItem>,
-    module: XtFile,
-    modules: Vec<XtFile>,
+    pub symbol_map: BTreeMap<String, ScopeItem>,
+    pub module: XtFile,
+    pub modules: Vec<XtFile>,
 }
 
 impl ModuleScope {
@@ -97,11 +97,20 @@ impl FileModuleLoader {
             search_paths: Vec::new(),
         }
     }
+
+    pub fn add_path(&mut self, path: PathBuf) {
+        self.search_paths.push(path);
+    }
 }
 
 impl ModuleLoader for FileModuleLoader {
     fn load_module<T: AsRef<str> + Sized>(&self, name: T) -> XtFile {
         let module_path = Path::new(name.as_ref());
+
+        if self.search_paths.len() == 0 {
+            panic!("FileModuleLoader needs at least one path to search for modules, none were provided. Check the add_path function.");
+        }
+
         for search_path in &self.search_paths {
             let mut filename = search_path.to_owned();
             println!("searching {:?} for {:?}", search_path, module_path);

@@ -1,6 +1,6 @@
 ---
-created: "2019-04-10T22:13:24.941194Z"
-creator: insta@0.6.2
+created: "2019-04-24T08:40:07.199059Z"
+creator: insta@0.6.3
 source: tests/output.rs
 expression: defs
 ---
@@ -9,10 +9,10 @@ expression: defs
 
 export namespace Book {
   export type T = {
-      id: string.T
-      title: string.T
-      author: string.T
-      isbn: string.T
+      id: string
+      title: string
+      author: string
+      isbn: string
       media: Media.T
   }
 }
@@ -26,18 +26,18 @@ export namespace Media {
 
 export namespace EBook {
   export type T = {
-      filesize: float32.T
+      filesize: number
   }
 }
 
 export namespace AudioBook {
   export type T = {
-      length: float32.T
+      length: number
   }
 }
 
 export namespace PhysicalBook {
   export type T = {
-      pages: int32.T
+      pages: number
   }
 }

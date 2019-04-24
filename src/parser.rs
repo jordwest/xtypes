@@ -41,12 +41,12 @@ impl From<Pair<'_, Rule>> for EnumVariant {
         match pair.as_rule() {
             Rule::variant => {
                 let mut name = String::new();
-                let mut attrs = Vec::new();
+                let mut attrs = AttributeList::new();
                 let mut content = None;
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::ident => name = pair.as_str().into(),
-                        Rule::attribute => attrs.push(pair.into()),
+                        Rule::attribute => attrs.add(pair.into()),
                         Rule::tuple => content = Some(pair.into()),
                         _ => panic!(),
                     }
@@ -101,12 +101,12 @@ impl From<Pair<'_, Rule>> for StructField {
                 let mut name = None;
                 let mut type_name = None;
                 let mut is_optional = false;
-                let mut attrs = Vec::new();
+                let mut attrs = AttributeList::new();
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::field_name => name = Some(pair.as_str().into()),
                         Rule::type_name => type_name = Some(pair.into()),
-                        Rule::attribute => attrs.push(pair.into()),
+                        Rule::attribute => attrs.add(pair.into()),
                         Rule::optional => is_optional = true,
                         _ => panic!("Unexpected rule {}", pair.as_str()),
                     }
@@ -143,26 +143,16 @@ impl From<Pair<'_, Rule>> for MessageType {
     }
 }
 
-impl SymbolDefinition {
-    pub fn attr(&self, key: &str) -> Option<String> {
-        for attr in &self.attrs {
-            if attr.name == key {
-                return Some(attr.value.clone());
-            }
-        }
-        return None;
-    }
-}
 impl From<Pair<'_, Rule>> for SymbolDefinition {
     fn from(pair: Pair<'_, Rule>) -> SymbolDefinition {
         let mut name: Option<TypeName> = None;
         let mut value: Option<MessageType> = None;
-        let mut attrs = vec![];
+        let mut attrs = AttributeList::new();
         let rule = pair.as_rule();
         for pair in pair.into_inner() {
             match pair.as_rule() {
                 Rule::type_name => name = Some(pair.into()),
-                Rule::attribute => attrs.push(pair.into()),
+                Rule::attribute => attrs.add(pair.into()),
                 _ => value = Some(pair.into()),
             }
         }
@@ -185,12 +175,12 @@ impl From<Pair<'_, Rule>> for ModuleInfo {
     fn from(pair: Pair<'_, Rule>) -> ModuleInfo {
         match pair.as_rule() {
             Rule::module_decl => {
-                let mut attrs = vec![];
+                let mut attrs = AttributeList::new();
                 let mut name = "";
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::dotted_ident => name = pair.as_str(),
-                        Rule::attribute => attrs.push(pair.into()),
+                        Rule::attribute => attrs.add(pair.into()),
                         _ => panic!(),
                     }
                 }
@@ -241,7 +231,7 @@ impl From<Pair<'_, Rule>> for ModuleUse {
             Rule::use_statement => {
                 let mut ident = None;
                 let mut filename = None;
-                let mut attrs = vec![];
+                let mut attrs = AttributeList::new();
                 for pair in pair.into_inner() {
                     match pair.as_rule() {
                         Rule::ident => {
@@ -249,7 +239,7 @@ impl From<Pair<'_, Rule>> for ModuleUse {
                         }
                         Rule::wildcard => ident = Some(IdentOrWildcard::Wildcard),
                         Rule::filename => filename = Some(pair.as_str()),
-                        Rule::attribute => attrs.push(pair.into()),
+                        Rule::attribute => attrs.add(pair.into()),
                         r => panic!("Unexpected rule {:?}", r),
                     }
                 }

@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 /// An attribute is a special flag that can be attached to:
 ///  - A message
 ///  - A field
@@ -27,6 +29,23 @@ pub struct Attribute {
     pub value: String,
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct AttributeList(BTreeMap<String, Attribute>);
+
+impl AttributeList {
+    pub fn new() -> Self {
+        AttributeList(BTreeMap::new())
+    }
+
+    pub fn add(&mut self, attr: Attribute) {
+        self.0.insert(attr.name.clone(), attr);
+    }
+
+    pub fn get<T: AsRef<str> + Sized>(&self, key: T) -> Option<String> {
+        self.0.get(key.as_ref()).map(|a| a.value.clone())
+    }
+}
+
 /// A tuple can contain multiple types in a sequence.
 ///
 /// For example:
@@ -54,7 +73,7 @@ pub struct EnumMessage {
 #[derive(Clone, Debug, PartialEq)]
 pub struct EnumVariant {
     pub name: String,
-    pub attrs: Vec<Attribute>,
+    pub attrs: AttributeList,
     pub content: Option<Tuple>,
 }
 
@@ -63,7 +82,7 @@ pub struct StructField {
     pub name: String,
     pub type_name: TypeName,
     pub is_optional: bool,
-    pub attrs: Vec<Attribute>,
+    pub attrs: AttributeList,
 }
 #[derive(Clone, Debug, PartialEq)]
 pub struct StructMessage {
@@ -85,14 +104,14 @@ pub enum SymbolType {
 #[derive(Clone, Debug, PartialEq)]
 pub struct SymbolDefinition {
     pub name: TypeName,
-    pub attrs: Vec<Attribute>,
+    pub attrs: AttributeList,
     pub value: SymbolType,
 }
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct ModuleInfo {
     pub name: String,
-    pub attrs: Vec<Attribute>,
+    pub attrs: AttributeList,
 }
 
 /// A portion of a [DottedIdent](xtypes::ast::DottedIdent).
@@ -126,7 +145,7 @@ pub enum IdentOrWildcard {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct ModuleUse {
-    pub attrs: Vec<Attribute>,
+    pub attrs: AttributeList,
     pub filename: String,
     pub ident: IdentOrWildcard,
 }

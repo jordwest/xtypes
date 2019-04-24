@@ -42,7 +42,7 @@ mod gen {
     }
 
     pub fn docblock(msg: &SymbolDefinition) -> Block {
-        match msg.attr("doc") {
+        match msg.attrs.get("doc") {
             None => Block::empty(),
             Some(v) => Template::docblock(v),
         }

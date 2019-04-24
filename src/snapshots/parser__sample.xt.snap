@@ -1,32 +1,38 @@
 ---
-created: "2019-04-20T08:31:01.980Z"
-creator: insta@0.6.2
+created: "2019-04-24T08:38:34.250912Z"
+creator: insta@0.6.3
 source: src/parser.rs
 expression: file
 ---
 XtFile {
     module_info: ModuleInfo {
         name: "Sample.Test",
-        attrs: [
-            Attribute {
-                name: "output",
-                value: "/sample/test/somefile.txt"
+        attrs: AttributeList(
+            {
+                "output": Attribute {
+                    name: "output",
+                    value: "/sample/test/somefile.txt"
+                }
             }
-        ]
+        )
     },
     use_imports: [
         ModuleUse {
-            attrs: [],
+            attrs: AttributeList(
+                {}
+            ),
             filename: "prelude.xt",
             ident: Wildcard
         },
         ModuleUse {
-            attrs: [
-                Attribute {
-                    name: "import_attr",
-                    value: "test123"
+            attrs: AttributeList(
+                {
+                    "import_attr": Attribute {
+                        name: "import_attr",
+                        value: "test123"
+                    }
                 }
-            ],
+            ),
             filename: "sample2.xt",
             ident: Ident(
                 "Sample2"
@@ -38,38 +44,44 @@ XtFile {
             name: Concrete(
                 "EnumSample"
             ),
-            attrs: [
-                Attribute {
-                    name: "doc",
-                    value: "This message could be one of three shapes"
+            attrs: AttributeList(
+                {
+                    "doc": Attribute {
+                        name: "doc",
+                        value: "This message could be one of three shapes"
+                    }
                 }
-            ],
+            ),
             value: Message(
                 Enum(
                     EnumMessage {
                         variants: [
                             EnumVariant {
                                 name: "One",
-                                attrs: [
-                                    Attribute {
-                                        name: "thing.stuff",
-                                        value: "xyz"
-                                    },
-                                    Attribute {
-                                        name: "json.tag",
-                                        value: "A"
+                                attrs: AttributeList(
+                                    {
+                                        "json.tag": Attribute {
+                                            name: "json.tag",
+                                            value: "A"
+                                        },
+                                        "thing.stuff": Attribute {
+                                            name: "thing.stuff",
+                                            value: "xyz"
+                                        }
                                     }
-                                ],
+                                ),
                                 content: None
                             },
                             EnumVariant {
                                 name: "Two",
-                                attrs: [
-                                    Attribute {
-                                        name: "blah",
-                                        value: "X"
+                                attrs: AttributeList(
+                                    {
+                                        "blah": Attribute {
+                                            name: "blah",
+                                            value: "X"
+                                        }
                                     }
-                                ],
+                                ),
                                 content: Some(
                                     Tuple(
                                         [
@@ -81,7 +93,9 @@ XtFile {
                             },
                             EnumVariant {
                                 name: "Three",
-                                attrs: [],
+                                attrs: AttributeList(
+                                    {}
+                                ),
                                 content: None
                             }
                         ]
@@ -93,16 +107,18 @@ XtFile {
             name: Concrete(
                 "StructSample"
             ),
-            attrs: [
-                Attribute {
-                    name: "doc",
-                    value: "Example of a struct/record type"
-                },
-                Attribute {
-                    name: "http.method",
-                    value: "GET"
+            attrs: AttributeList(
+                {
+                    "doc": Attribute {
+                        name: "doc",
+                        value: "Example of a struct/record type"
+                    },
+                    "http.method": Attribute {
+                        name: "http.method",
+                        value: "GET"
+                    }
                 }
-            ],
+            ),
             value: Message(
                 Struct(
                     StructMessage {
@@ -119,12 +135,14 @@ XtFile {
                                     )
                                 ),
                                 is_optional: false,
-                                attrs: [
-                                    Attribute {
-                                        name: "json.key",
-                                        value: "X"
+                                attrs: AttributeList(
+                                    {
+                                        "json.key": Attribute {
+                                            name: "json.key",
+                                            value: "X"
+                                        }
                                     }
-                                ]
+                                )
                             },
                             StructField {
                                 name: "optional_field",
@@ -132,12 +150,14 @@ XtFile {
                                     "type"
                                 ),
                                 is_optional: true,
-                                attrs: [
-                                    Attribute {
-                                        name: "json.key",
-                                        value: "Y"
+                                attrs: AttributeList(
+                                    {
+                                        "json.key": Attribute {
+                                            name: "json.key",
+                                            value: "Y"
+                                        }
                                     }
-                                ]
+                                )
                             }
                         ]
                     }
