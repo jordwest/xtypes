@@ -49,7 +49,7 @@ impl ModuleScope {
     }
 
     pub fn load_module_and_imports<T: AsRef<str> + Sized>(
-        loader: impl ModuleLoader,
+        loader: &impl ModuleLoader,
         module_location: T,
     ) -> ModuleScope {
         let module = loader.load_module(module_location);
@@ -79,7 +79,7 @@ fn test_load_module_and_imports() {
     let mut file_loader = FileModuleLoader::new();
     file_loader.search_paths.push(src_dir);
 
-    let scope = ModuleScope::load_module_and_imports(file_loader, "sample.xt");
+    let scope = ModuleScope::load_module_and_imports(&file_loader, "sample.xt");
     assert_debug_snapshot_matches!("ModuleScope::load_module_and_imports", scope);
 }
 

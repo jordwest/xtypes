@@ -1,0 +1,20 @@
+---
+created: "2019-04-24T08:49:32.010852Z"
+creator: insta@0.6.3
+source: tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+
+
+export namespace FindBooksRequest {
+  export type T = {
+      query: Option.T<string>
+  }
+}
+
+export namespace FindBooksResponse {
+  export type T = {
+      books: Book.T[]
+  }
+}

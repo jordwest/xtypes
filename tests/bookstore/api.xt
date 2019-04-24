@@ -1,11 +1,12 @@
+module Bookstore.Api;
 use "prelude.xt" as *;
-use "data.xt" as *;
+use "bookstore/data.xt" as *;
 
 message FindBooksRequest = {
     /// Optional query 
     query: Option<string>,
-}
+};
 
 message FindBooksResponse = {
     books: Array<Book>,
-}
+};
