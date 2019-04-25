@@ -1,12 +1,12 @@
 ---
-created: "2019-04-24T09:13:18.538372Z"
-creator: insta@0.6.3
-source: tests/output.rs
+created: "2019-04-25T05:59:19.828972Z"
+creator: insta@0.7.4
+source: xtypes-json-typescript/tests/output.rs
 expression: defs
 ---
 // This file was generated automatically
 import * from "prelude.xt.ts"
-import * as Data from "bookstore/data.xt.ts"
+import * as Data from "data.xt.ts"
 
 
 export namespace FindBooksRequest {

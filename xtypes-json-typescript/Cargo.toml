@@ -1,0 +1,11 @@
+[package]
+name = "xtypes-json-typescript"
+version = "0.1.0"
+authors = ["Jordan West <jordwest@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+insta = "0.7.4"
+jens = "0.6.0"
+jens_derive = "0.6.0"
+xtypes = { version = "0.2.0", path = "../xtypes" }

@@ -3,7 +3,7 @@ use pest::iterators::Pair;
 use pest::Parser;
 use pest_derive::Parser;
 
-///! The parser takes a `.xt` file and parses it into an AST
+/// The parser takes a `.xt` file and parses it into an AST
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]

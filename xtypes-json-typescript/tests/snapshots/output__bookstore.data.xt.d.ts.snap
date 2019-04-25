@@ -1,7 +1,7 @@
 ---
-created: "2019-04-24T09:10:18.771515Z"
-creator: insta@0.6.3
-source: tests/output.rs
+created: "2019-04-25T05:57:51.558679Z"
+creator: insta@0.7.4
+source: xtypes-json-typescript/tests/output.rs
 expression: defs
 ---
 // This file was generated automatically

@@ -2,4 +2,5 @@
 
 members = [
     "xtypes",
+    "xtypes-json-typescript",
 ]

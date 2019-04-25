@@ -1,6 +1,6 @@
 [package]
 name = "xtypes"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Jordan West <jordwest@gmail.com>"]
 edition = "2018"
 description = "A Rust-like IDL that doesn't prescribe a transport format"

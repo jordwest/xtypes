@@ -1,17 +1,16 @@
-use crate::ast::*;
-use crate::module_loader::ModuleScope;
+use xtypes::ast::*;
+use xtypes::module_loader::ModuleScope;
 use jens::Block;
-
 use jens_derive::Template;
 
 #[derive(Template)]
-#[filename = "writers/typescript.jens"]
+#[filename = "typescript.jens"]
 struct Template {}
 
 mod gen {
     use super::Template;
-    use crate::ast::*;
-    use crate::module_loader::ModuleScope;
+    use xtypes::ast::*;
+    use xtypes::module_loader::ModuleScope;
     use jens::Block;
 
     pub fn tuple_type(v: &Tuple) -> Block {

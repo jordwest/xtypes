@@ -1,6 +1,6 @@
 module Bookstore.Api;
 use "prelude.xt" as *;
-use "bookstore/data.xt" as Data;
+use "data.xt" as Data;
 
 message FindBooksRequest = {
     /// Optional query 
