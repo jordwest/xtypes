@@ -1,0 +1,21 @@
+---
+created: "2019-04-25T06:16:06.792371Z"
+creator: insta@0.7.4
+source: xtypes-json-rust/tests/output.rs
+expression: defs
+---
+// This file was generated automatically
+use serde_json::json;
+
+
+
+#[derive(Serialize, Deserialize)]
+pub struct FindBooksRequest {
+  pub query: Option<string>,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct FindBooksResponse {
+  pub books: Array<Data.Book>,
+}
