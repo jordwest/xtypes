@@ -1,16 +1,5 @@
-[package]
-name = "xtypes"
-version = "0.1.0"
-authors = ["Jordan West <jordwest@gmail.com>"]
-edition = "2018"
-description = "A Rust-like IDL that doesn't prescribe a transport format"
-license = "MIT"
+[workspace]
 
-[dependencies]
-pest = "2.1.0"
-pest_derive = "2.1.0"
-jens = "0.6.0"
-jens_derive = "0.6.0"
-
-[dev-dependencies]
-insta = "0.6.2"
+members = [
+    "xtypes",
+]
